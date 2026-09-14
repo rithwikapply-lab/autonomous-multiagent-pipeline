@@ -79,7 +79,10 @@ class DenseIndex:
                 )
                 result = await session.execute(stmt)
                 rows = result.all()
-                return [(str(row[0]), float(1.0 - row[1])) for row in rows]
+                if rows:
+                    if settings.OPENAI_API_KEY and settings.OPENAI_API_KEY != "your_openai_api_key_here":
+                        return [(str(row[0]), float(1.0 - row[1])) for row in rows if (1.0 - float(row[1])) >= 0.25]
+                    return [(str(row[0]), float(1.0 - row[1])) for row in rows]
             except Exception as e:
                 logger.warning(f"Database pgvector query failed: {e}. Falling back to in-memory.")
 
@@ -94,6 +97,9 @@ class DenseIndex:
                 sim = self._cosine_similarity(query_vector, c_vec)
                 scores.append((c["chunk_id"], float(sim)))
             scores.sort(key=lambda x: x[1], reverse=True)
+            if settings.OPENAI_API_KEY and settings.OPENAI_API_KEY != "your_openai_api_key_here":
+                filtered = [(cid, sim) for cid, sim in scores if sim >= 0.25]
+                return filtered[:top_k]
             return scores[:top_k]
 
         return []

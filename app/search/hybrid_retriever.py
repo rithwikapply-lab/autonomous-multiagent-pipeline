@@ -26,6 +26,19 @@ class HybridRetriever:
         top_k: int = 5,
         in_memory_chunks: Optional[List[Dict[str, Any]]] = None
     ) -> List[Dict[str, Any]]:
+        # Auto-sync BM25 index from DB if session provided and index empty
+        if session and not bm25_index.chunk_ids:
+            try:
+                from sqlalchemy import select
+                from app.db.models import ChunkModel
+                stmt = select(ChunkModel)
+                db_res = await session.execute(stmt)
+                db_chunks = db_res.scalars().all()
+                if db_chunks:
+                    bm25_index.add_documents([{"chunk_id": c.id, "content": c.content} for c in db_chunks])
+            except Exception as e:
+                logger.warning(f"BM25 index auto-sync from DB skipped: {e}")
+
         # 1. Sparse Search
         sparse_results = bm25_index.search(query, top_k=settings.TOP_K_SPARSE)
 

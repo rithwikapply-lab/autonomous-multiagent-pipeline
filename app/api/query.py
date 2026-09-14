@@ -58,7 +58,12 @@ async def query_pipeline(
 
     # 4. Cross-Encoder Reranking
     if request.enable_reranking and retrieved:
-        retrieved = cross_encoder_reranker.rerank(request.query, retrieved, top_k=request.top_k)
+        retrieved = cross_encoder_reranker.rerank(
+            request.query,
+            retrieved,
+            top_k=request.top_k,
+            filter_irrelevant=True
+        )
     else:
         retrieved = retrieved[:request.top_k]
 
