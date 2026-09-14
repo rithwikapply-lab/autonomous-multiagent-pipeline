@@ -1,0 +1,40 @@
+[
+  {
+    "doc_id": "doc_infra_001",
+    "title": "Cloud Infrastructure Incident & Telemetry Postmortem",
+    "content": "During the Q3 high-load event, the API gateway experienced an unprecedented surge of 45,000 requests per second. The P99 latency degraded from 120ms to 850ms, triggering automated scaling rules. The database connection pool reached 98% saturation, causing 1,250 HTTP 504 gateway timeout errors over an 18-minute window. Memory consumption on worker nodes peaked at 88%. Remediation involved increasing horizontal pod autoscaling replicas from 12 to 36 and enabling Redis read-replicas, which successfully restored P99 latency to 95ms within 4 minutes.",
+    "eval_questions": [
+      {
+        "query": "What was the peak request rate and how many HTTP 504 errors occurred during the incident?",
+        "expected_metrics": [
+          {"metric": "requests per second", "expected_value": "45,000"},
+          {"metric": "HTTP 504", "expected_value": "1,250"}
+        ],
+        "ground_truth": "The API gateway reached 45,000 requests per second with 1,250 HTTP 504 errors over 18 minutes."
+      },
+      {
+        "query": "How was P99 latency recovered and what was the final stabilized latency?",
+        "expected_metrics": [
+          {"metric": "latency", "expected_value": "95ms"},
+          {"metric": "replicas", "expected_value": "36"}
+        ],
+        "ground_truth": "Replicas were increased from 12 to 36 and Redis read-replicas enabled, restoring P99 latency to 95ms in 4 minutes."
+      }
+    ]
+  },
+  {
+    "doc_id": "doc_ai_002",
+    "title": "LLM Inference Cost & Latency Benchmark Report",
+    "content": "In our internal model benchmarking across 100,000 test queries, fine-tuned open-source 8B parameter models running on vLLM achieved an average time-to-first-token (TTFT) of 45ms and token throughput of 115 tokens/sec. In comparison, proprietary commercial API endpoints averaged 180ms TTFT at 75 tokens/sec. Implementing prompt prefix caching reduced monthly token expenditure by 34%, saving approximately $14,200 monthly across production inference pipelines.",
+    "eval_questions": [
+      {
+        "query": "Compare the TTFT and token throughput between the fine-tuned 8B model and commercial API.",
+        "expected_metrics": [
+          {"metric": "TTFT", "expected_value": "45ms"},
+          {"metric": "throughput", "expected_value": "115"}
+        ],
+        "ground_truth": "The 8B model had 45ms TTFT and 115 tokens/sec compared to 180ms TTFT and 75 tokens/sec for the commercial API."
+      }
+    ]
+  }
+]
