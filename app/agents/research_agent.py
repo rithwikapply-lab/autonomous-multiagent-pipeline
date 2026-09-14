@@ -1,4 +1,5 @@
 import json
+import re
 from typing import Dict, Any, List
 import httpx
 from app.config import settings
@@ -96,16 +97,26 @@ Rules:
 
         # 2. Build synthesis summary
         combined_text = " ".join([c.get("content", "") for c in chunks])
-        first_sentence = combined_text.split(".")[0] if "." in combined_text else combined_text[:150]
+        first_sentence = combined_text.split(".")[0].strip() if "." in combined_text else combined_text[:150].strip()
+
+        # Extract concrete claim sentences from retrieved chunks
+        extracted_claims = []
+        for c in chunks:
+            content = c.get("content", "")
+            sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', content) if len(s.strip()) > 15]
+            for s in sentences:
+                if s not in extracted_claims:
+                    extracted_claims.append(s)
+                if len(extracted_claims) >= 3:
+                    break
+            if len(extracted_claims) >= 3:
+                break
 
         summary = AnalyticalSummary(
             query=query,
             executive_summary=f"Analysis based on {len(chunks)} verified document chunks: {first_sentence}.",
             key_metrics=all_metrics[:5],
-            verifiable_claims=[
-                f"Retrieved factual data points from source chunk: {c.get('chunk_id')}"
-                for c in chunks[:3]
-            ],
+            verifiable_claims=extracted_claims if extracted_claims else ([first_sentence] if first_sentence else []),
             confidence_score=0.88,
             source_citations=citations[:5]
         )
