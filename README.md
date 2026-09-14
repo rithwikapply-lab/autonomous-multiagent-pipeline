@@ -1,6 +1,6 @@
 # Autonomous Multi-Agent Analysis Pipeline
 
-Production-grade, asynchronous Multi-Agent Analysis Pipeline powered by **FastAPI**, **PostgreSQL (`pgvector`)**, **Hybrid Search (BM25 + Dense Embeddings)**, **Cross-Encoder Reranking**, and **DeepEval / LangSmith Verification**.
+A reference implementation of an asynchronous Multi-Agent Analysis Pipeline powered by **FastAPI**, **PostgreSQL (`pgvector`)**, **Hybrid Search (BM25 + Dense Embeddings)**, **Cross-Encoder Reranking**, and **DeepEval / LangSmith Verification**.
 
 ---
 
@@ -61,7 +61,7 @@ Production-grade, asynchronous Multi-Agent Analysis Pipeline powered by **FastAP
 1. **Autonomous Multi-Agent Workflow:**
    - **ContextRouter:** Analyzes incoming queries, detects intent (quantitative comparison, metric extraction, root-cause analysis), and formulates multi-angle retrieval sub-queries.
    - **ResearchAgent:** Synthesizes evidence, extracts quantitative metrics, and enforces strict Pydantic JSON schemas (`AnalyticalSummary`).
-   - **VerifierAgent:** Adversarial fact-checking agent that audits every generated claim against retrieved source chunks to eliminate hallucinations.
+   - **VerifierAgent:** Adversarial fact-checking agent that audits every generated claim against retrieved source chunks to reduce hallucinations.
 
 2. **State-of-the-Art Hybrid Search:**
    - **Sparse Lexical Search:** Tokenized BM25Okapi for exact terminology, acronyms, and error codes.
@@ -156,6 +156,14 @@ Metric Extraction Accuracy: 100.0%
 Hallucination Rate:         0.0%
 ======================================================================
 ```
+
+---
+
+## Evaluation Data
+
+The dataset in `evals/test_dataset.json` is synthetic — illustrative queries and metrics used to demonstrate the evaluation harness (ground-truth matching, metric extraction), not measurements from a deployed or production system.
+
+> **Note on Performance Figures:** Specific numerical figures cited throughout this README (including the sample benchmark metrics above, +18% retrieval precision, sub-200ms P95 latency target, and 30%+ cache savings) are illustrative/target values from the synthetic eval harness, not measured results from a production deployment.
 
 ---
 
