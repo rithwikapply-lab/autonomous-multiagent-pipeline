@@ -54,6 +54,25 @@ class HybridRetriever:
         # Hydrate chunk objects
         results = []
         chunk_map = {c["chunk_id"]: c for c in (in_memory_chunks or [])}
+
+        if session:
+            missing_ids = [cid for cid, _ in sorted_ranks if cid not in chunk_map]
+            if missing_ids:
+                try:
+                    from sqlalchemy import select
+                    from app.db.models import ChunkModel
+                    stmt = select(ChunkModel).where(ChunkModel.id.in_(missing_ids))
+                    db_res = await session.execute(stmt)
+                    for cm in db_res.scalars().all():
+                        chunk_map[cm.id] = {
+                            "chunk_id": cm.id,
+                            "doc_id": cm.doc_id,
+                            "chunk_index": cm.chunk_index,
+                            "content": cm.content,
+                            "metadata": cm.chunk_metadata or {}
+                        }
+                except Exception as e:
+                    logger.warning(f"Database chunk hydration fallback: {e}")
         
         for chunk_id, rrf_score in sorted_ranks:
             if chunk_id in chunk_map:
@@ -63,6 +82,8 @@ class HybridRetriever:
             else:
                 results.append({
                     "chunk_id": chunk_id,
+                    "doc_id": "unknown",
+                    "chunk_index": 0,
                     "rrf_score": round(rrf_score, 5),
                     "content": f"[Content for chunk {chunk_id}]"
                 })

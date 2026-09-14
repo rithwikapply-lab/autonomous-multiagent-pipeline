@@ -88,10 +88,20 @@ async def query_pipeline(
         source_citations=draft.get("source_citations", [])
     )
 
+    # Ensure each chunk dict has chunk_index and doc_id for DocumentChunk validation
+    formatted_chunks = []
+    for idx, c in enumerate(retrieved):
+        chunk_dict = dict(c)
+        if "chunk_index" not in chunk_dict or chunk_dict["chunk_index"] is None:
+            chunk_dict["chunk_index"] = chunk_dict.get("metadata", {}).get("chunk_index", idx)
+        if "doc_id" not in chunk_dict or not chunk_dict["doc_id"]:
+            chunk_dict["doc_id"] = chunk_dict.get("metadata", {}).get("doc_id", "unknown")
+        formatted_chunks.append(chunk_dict)
+
     response = QueryResponse(
         query=request.query,
         analysis=analysis,
-        retrieved_chunks=retrieved,
+        retrieved_chunks=formatted_chunks,
         verification=verification_report,
         execution_time_ms=duration_ms,
         cached=False

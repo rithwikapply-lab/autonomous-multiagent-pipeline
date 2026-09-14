@@ -68,6 +68,7 @@ async def ingest_document(
             IN_MEMORY_CHUNKS.append({
                 "chunk_id": chunk_id,
                 "doc_id": doc_id,
+                "chunk_index": idx,
                 "content": content,
                 "embedding": embedding,
                 "metadata": request.metadata
