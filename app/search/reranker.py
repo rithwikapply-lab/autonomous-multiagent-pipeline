@@ -75,8 +75,10 @@ class CrossEncoderReranker:
                 reranked = sorted(chunks, key=lambda x: x.get("rerank_score", 0.0), reverse=True)
                 if filter_irrelevant and reranked:
                     max_score = reranked[0]["rerank_score"]
-                    filtered = [c for c in reranked if c["rerank_score"] > -2.0 and c["rerank_score"] >= max_score - 4.0]
-                    return (filtered if filtered else reranked[:1])[:top_k]
+                    if max_score < -5.0:
+                        return []
+                    filtered = [c for c in reranked if c["rerank_score"] > -5.0 and c["rerank_score"] >= max_score - 4.0]
+                    return filtered[:top_k]
                 return reranked[:top_k]
             except Exception as e:
                 logger.warning(f"Error during cross-encoder inference: {e}")
@@ -109,7 +111,9 @@ class CrossEncoderReranker:
 
         if filter_irrelevant and scored:
             top_score = scored[0]["rerank_score"]
-            filtered = [c for c in scored if c["rerank_score"] >= top_score * 0.5]
+            if top_score < 2.5:
+                return []
+            filtered = [c for c in scored if c["rerank_score"] >= 2.0 and c["rerank_score"] >= top_score * 0.5]
             return filtered[:top_k]
 
         return scored[:top_k]

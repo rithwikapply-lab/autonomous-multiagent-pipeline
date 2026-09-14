@@ -6,6 +6,7 @@ from app.config import settings
 from app.models.schemas import AnalyticalSummary, MetricFinding
 from app.models.state import AgentState, AgentThoughtStep
 from app.agents.tools import AgentTools
+from app.search.reranker import STOP_WORDS, _stem
 import logging
 
 logger = logging.getLogger(__name__)
@@ -21,7 +22,7 @@ Your objective is to analyze the provided retrieved document chunks and produce 
 Rules:
 1. Every claim must cite the specific chunk_id from which it was extracted.
 2. Extract all quantitative metrics with exact values and confidence scores.
-3. Do NOT hallucinate. If context does not answer the question, state it explicitly.
+3. Do NOT hallucinate. If the retrieved context does not answer the question or contains no relevant information, you MUST set "executive_summary": "I don't have information about this in the provided documents.", "key_metrics": [], "verifiable_claims": [], and "confidence_score": 0.0.
 4. Output MUST be valid JSON matching the schema below:
 {
   "executive_summary": "High-level synthesis",
@@ -40,6 +41,52 @@ Rules:
     async def analyze(self, state: AgentState) -> AgentState:
         query = state.query
         chunks = state.retrieved_chunks
+
+        # If no chunks provided or retrieval yielded no relevant context
+        if not chunks:
+            summary = AnalyticalSummary(
+                query=query,
+                executive_summary="I don't have information about this in the provided documents.",
+                key_metrics=[],
+                verifiable_claims=[],
+                confidence_score=0.0,
+                source_citations=[]
+            )
+            state.draft_summary = summary.model_dump()
+            state.thought_history.append(AgentThoughtStep(
+                agent_name="ResearchAgent",
+                thought="No relevant document chunks found in knowledge base for query.",
+                action="conclude_no_context",
+                observation="Returned standard no-information response."
+            ))
+            return state
+
+        # Check if chunks contain any substantive query keywords
+        q_tokens = [
+            _stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', query.lower())
+            if w not in STOP_WORDS and len(w) > 2
+        ]
+        context_text = " ".join([c.get("content", "").lower() for c in chunks])
+        c_tokens = set([_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', context_text)])
+
+        has_topical_match = any(qt in c_tokens for qt in q_tokens) if q_tokens else True
+        if not has_topical_match:
+            summary = AnalyticalSummary(
+                query=query,
+                executive_summary="I don't have information about this in the provided documents.",
+                key_metrics=[],
+                verifiable_claims=[],
+                confidence_score=0.0,
+                source_citations=[]
+            )
+            state.draft_summary = summary.model_dump()
+            state.thought_history.append(AgentThoughtStep(
+                agent_name="ResearchAgent",
+                thought="Provided context chunks do not address the query topic.",
+                action="conclude_no_information",
+                observation="Returned standard no-information response."
+            ))
+            return state
 
         # Format context for prompt
         formatted_chunks = "\n\n".join([

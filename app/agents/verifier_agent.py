@@ -25,11 +25,34 @@ STOP_WORDS = {
     "you'd", "you'll", "you're", "you've", "your", "yours", "yourself", "yourselves"
 }
 
+from app.search.reranker import _stem
+
+GENERIC_QUERY_WORDS = {
+    "what", "is", "are", "your", "the", "a", "an", "about", "how", "do", "does",
+    "can", "could", "would", "please", "tell", "me", "our", "policy", "information", "details"
+}
+
 class VerifierAgent:
     """
     Adversarial verification agent that cross-checks draft claims
     against retrieved context to detect hallucinations and ensure faithfulness.
     """
+
+    def _is_topically_relevant(self, query: str, text: str) -> bool:
+        """
+        Validates whether the answer or claim addresses the core subject matter of the query.
+        """
+        words = re.findall(r'\b[a-zA-Z0-9_]+\b', query.lower())
+        substantive_q = [
+            _stem(w) for w in words
+            if w not in STOP_WORDS and w not in GENERIC_QUERY_WORDS and len(w) > 2
+        ]
+        # If the query has no specific non-generic topic words, default to true
+        if not substantive_q:
+            return True
+
+        text_words = set([_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', text.lower())])
+        return any(q_stem in text_words for q_stem in substantive_q)
 
     def _is_claim_supported(self, claim: str, context_text: str, chunks: List[Dict[str, Any]]) -> bool:
         """
@@ -71,9 +94,43 @@ class VerifierAgent:
         return ratio >= 0.6
 
     def verify(self, state: AgentState) -> AgentState:
+        query = state.query
         draft = state.draft_summary or {}
         chunks = state.retrieved_chunks
         context_text = " ".join([c.get("content", "").lower() for c in chunks])
+
+        exec_summary = draft.get("executive_summary", "")
+
+        # Check if the summary explicitly states lack of information in the knowledge base
+        no_info_patterns = [
+            r"don'?t have information",
+            r"no information",
+            r"not found in (?:the )?provided documents",
+            r"does not contain information"
+        ]
+        is_no_info_summary = any(re.search(p, exec_summary, re.IGNORECASE) for p in no_info_patterns)
+        if is_no_info_summary:
+            is_topical_in_context = self._is_topically_relevant(query, context_text)
+            if not chunks or not is_topical_in_context:
+                report = VerificationReport(
+                    is_faithful=True,
+                    hallucination_score=0.0,
+                    verified_claims=["Correctly confirmed that knowledge base lacks information for query."],
+                    unsupported_claims=[],
+                    suggested_corrections=None
+                )
+                state.is_verified = True
+                state.final_output = {
+                    **draft,
+                    "verification_report": report.model_dump()
+                }
+                state.thought_history.append(AgentThoughtStep(
+                    agent_name="VerifierAgent",
+                    thought="Confirmed summary accurately states lack of information in knowledge base.",
+                    action="verify_no_info_faithful",
+                    observation="Faithfulness score: 1.0 (No hallucinated claims)."
+                ))
+                return state
 
         raw_claims = list(draft.get("verifiable_claims", []))
         metrics = draft.get("key_metrics", [])
@@ -85,7 +142,6 @@ class VerifierAgent:
         ]
 
         # If no specific verifiable claims, extract individual assertions from executive_summary
-        exec_summary = draft.get("executive_summary", "")
         if not clean_claims and exec_summary:
             cleaned_summary = re.sub(
                 r"^analysis based on \d+ verified document chunks:\s*",
@@ -102,19 +158,28 @@ class VerifierAgent:
         verified_claims: List[str] = []
         unsupported_claims: List[str] = []
 
-        # 1. Verify metrics against context
+        is_context_topical = self._is_topically_relevant(query, context_text)
+
+        # 1. Verify metrics against context and topic
         for m in metrics:
             val = str(m.get("value", "")).strip().lower()
             m_name = m.get("metric_name", "Metric")
-            if val and val in context_text:
+            if not is_context_topical:
+                unsupported_claims.append(f"Metric '{m_name}' ({val}) is from an unrelated topic for query '{query}'.")
+            elif val and val in context_text:
                 verified_claims.append(f"Metric '{m_name}' ({val}) verified in context.")
             else:
                 unsupported_claims.append(f"Metric '{m_name}' value ({val}) not found in retrieved chunks.")
 
-        # 2. Verify discrete factual claims against context
+        # 2. Verify discrete factual claims against context and topical relevance
         for claim in clean_claims:
-            if self._is_claim_supported(claim, context_text, chunks):
+            is_grounded = self._is_claim_supported(claim, context_text, chunks)
+            claim_is_topical = self._is_topically_relevant(query, claim)
+
+            if is_grounded and (claim_is_topical or is_context_topical):
                 verified_claims.append(claim)
+            elif is_grounded and not (claim_is_topical or is_context_topical):
+                unsupported_claims.append(f"Claim is grounded in context but off-topic for query '{query}': {claim}")
             else:
                 unsupported_claims.append(claim)
 
@@ -135,7 +200,7 @@ class VerifierAgent:
             hallucination_score=hallucination_score,
             verified_claims=verified_claims,
             unsupported_claims=unsupported_claims,
-            suggested_corrections="Ground all assertions strictly in provided citations." if not is_faithful else None
+            suggested_corrections="Ground all assertions strictly in relevant citations addressing the query." if not is_faithful else None
         )
 
         state.is_verified = is_faithful
