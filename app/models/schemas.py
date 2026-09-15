@@ -27,7 +27,7 @@ class DocumentIngestResponse(BaseModel):
 
 class QueryRequest(BaseModel):
     query: str
-    top_k: int = 5
+    top_k: int = Field(default=5, ge=1, description="Number of document chunks to retrieve, minimum 1")
     enable_reranking: bool = True
     enable_verification: bool = True
     metadata_filter: Optional[Dict[str, Any]] = None
