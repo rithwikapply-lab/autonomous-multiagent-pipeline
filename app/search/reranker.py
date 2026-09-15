@@ -27,12 +27,54 @@ STOP_WORDS = {
 }
 
 def _stem(word: str) -> str:
+    """
+    Two-phase deterministic morphological stemmer:
+    Phase 1: Plural & inflectional normalization with root protection (-ss, -ies, -sses, -s, -es).
+    Phase 2: Derivational & verb inflections (-eed, -ing, -ed, -tion, silent -e) with consonant undoubling.
+    """
     w = word.lower().strip()
+    if len(w) <= 2:
+        return w
+
+    # Phase 1: Plural & Inflectional Normalization
+    # 1a. Irregular -ies -> -y (length > 4, e.g. policies -> policy, categories -> category)
     if len(w) > 4 and w.endswith("ies"):
-        return w[:-3] + "y"
-    for suffix in ["ing", "tion", "ed", "es", "s", "e"]:
-        if len(w) > len(suffix) + 2 and w.endswith(suffix):
-            return w[:-len(suffix)]
+        w = w[:-3] + "y"
+    # 1b. Double-s root protection with -sses (e.g. processes -> process, businesses -> business)
+    elif len(w) > 5 and w.endswith("sses"):
+        w = w[:-2]
+    # 1c. Double-s root protection: do NOT strip single 's' if word ends in 'ss' (e.g. business, process)
+    elif w.endswith("ss"):
+        pass
+    # 1d. Regular plural/third-person 's' and 'es'
+    elif len(w) > 4 and w.endswith("es") and not w.endswith(("ies", "sses")):
+        w = w[:-2]
+    elif len(w) > 3 and w.endswith("s") and not w.endswith(("ss", "us", "is")):
+        w = w[:-1]
+
+    # Phase 2: Derivational / Verb Inflections
+    # 2a. Suffix -eed (e.g. guaranteed -> guarantee, agreed -> agree)
+    if len(w) > 4 and w.endswith("eed"):
+        w = w[:-1]
+    # 2b. Suffix -ing with consonant undoubling (excluding protected -ss, -ll, -zz)
+    elif len(w) > 5 and w.endswith("ing"):
+        base = w[:-3]
+        if len(base) > 3 and base[-1] == base[-2] and base[-1] not in ("s", "l", "z"):
+            base = base[:-1]
+        w = base
+    # 2c. Suffix -ed with consonant undoubling (excluding protected -ss, -ll, -zz)
+    elif len(w) > 4 and w.endswith("ed"):
+        base = w[:-2]
+        if len(base) > 3 and base[-1] == base[-2] and base[-1] not in ("s", "l", "z"):
+            base = base[:-1]
+        w = base
+    # 2d. Suffix -tion
+    elif len(w) > 6 and w.endswith("tion"):
+        w = w[:-4]
+    # 2e. Trailing silent 'e' (length > 3, e.g. take -> tak, purpose -> purpos, device -> devic)
+    elif len(w) > 3 and w.endswith("e") and not w.endswith(("ee", "ye", "oe")):
+        w = w[:-1]
+
     return w
 
 class CrossEncoderReranker:
