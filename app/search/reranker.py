@@ -118,10 +118,12 @@ class CrossEncoderReranker:
                     chunk["rerank_score"] = float(score)
                 reranked = sorted(chunks, key=lambda x: x.get("rerank_score", 0.0), reverse=True)
                 if filter_irrelevant and reranked:
-                    max_score = reranked[0]["rerank_score"]
-                    if max_score < -5.0:
+                    top_score = reranked[0]["rerank_score"]
+                    min_score = reranked[-1]["rerank_score"]
+                    spread = top_score - min_score
+                    if top_score <= -8.0 or (len(reranked) >= 2 and spread <= 2.5):
                         return []
-                    filtered = [c for c in reranked if c["rerank_score"] > -5.0 and c["rerank_score"] >= max_score - 4.0]
+                    filtered = [c for c in reranked if c["rerank_score"] > -8.0 and c["rerank_score"] >= top_score - 4.0]
                     return filtered[:top_k]
                 return reranked[:top_k]
             except Exception as e:
