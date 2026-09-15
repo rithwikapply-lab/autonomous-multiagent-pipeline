@@ -11,13 +11,52 @@ from app.agents.router import router as context_router
 from app.agents.research_agent import research_agent
 from app.agents.verifier_agent import verifier_agent
 from app.api.ingest import IN_MEMORY_CHUNKS
+from app.config import settings
+from typing import Optional
+import redis.asyncio as aioredis
 import logging
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
-# Simple in-memory response cache for demo/offline resilience
-QUERY_CACHE = {}
+# Redis-backed response caching with graceful fallback
+_redis_client: Optional[aioredis.Redis] = None
+
+def get_redis_client() -> Optional[aioredis.Redis]:
+    global _redis_client
+    if _redis_client is None and settings.REDIS_URL:
+        try:
+            _redis_client = aioredis.from_url(
+                settings.REDIS_URL,
+                decode_responses=True,
+                socket_timeout=2.0,
+                socket_connect_timeout=2.0
+            )
+        except Exception as e:
+            logger.warning(f"Failed to initialize Redis client ({e}).")
+            _redis_client = None
+    return _redis_client
+
+async def get_cached_response(cache_key: str) -> Optional[QueryResponse]:
+    """Retrieves and deserializes QueryResponse from Redis; returns None on miss or error."""
+    try:
+        client = get_redis_client()
+        if client is not None:
+            data = await client.get(cache_key)
+            if data:
+                return QueryResponse.model_validate_json(data)
+    except Exception as e:
+        logger.warning(f"Redis cache lookup error ({e}), falling back to fresh query execution.")
+    return None
+
+async def set_cached_response(cache_key: str, response: QueryResponse, ttl_seconds: int = 3600):
+    """Serializes and caches QueryResponse in Redis with TTL; fails gracefully on error."""
+    try:
+        client = get_redis_client()
+        if client is not None:
+            await client.set(cache_key, response.model_dump_json(), ex=ttl_seconds)
+    except Exception as e:
+        logger.warning(f"Redis cache write error ({e}).")
 
 @router.post("/query", response_model=QueryResponse)
 async def query_pipeline(
@@ -35,12 +74,15 @@ async def query_pipeline(
     """
     start_time = time.perf_counter()
 
-    # Cache check
+    # Cache check (Redis-backed with graceful fallback)
     cache_key = f"{request.query}_{request.top_k}_{request.enable_reranking}"
-    if cache_key in QUERY_CACHE:
-        cached_result = QUERY_CACHE[cache_key]
-        cached_result.cached = True
-        return cached_result
+    cached_result = await get_cached_response(cache_key)
+    if cached_result is not None:
+        lookup_duration_ms = round((time.perf_counter() - start_time) * 1000, 2)
+        return cached_result.model_copy(update={
+            "cached": True,
+            "execution_time_ms": lookup_duration_ms
+        })
 
     # 1. Initialize State
     state = AgentState(query=request.query)
@@ -112,6 +154,6 @@ async def query_pipeline(
         cached=False
     )
 
-    # Cache response
-    QUERY_CACHE[cache_key] = response
+    # Cache response in Redis
+    await set_cached_response(cache_key, response, ttl_seconds=3600)
     return response
