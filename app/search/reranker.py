@@ -28,6 +28,8 @@ STOP_WORDS = {
 
 def _stem(word: str) -> str:
     w = word.lower().strip()
+    if len(w) > 4 and w.endswith("ies"):
+        return w[:-3] + "y"
     for suffix in ["ing", "tion", "ed", "es", "s", "e"]:
         if len(w) > len(suffix) + 2 and w.endswith(suffix):
             return w[:-len(suffix)]

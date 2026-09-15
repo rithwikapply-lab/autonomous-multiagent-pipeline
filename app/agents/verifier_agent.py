@@ -29,7 +29,7 @@ from app.search.reranker import _stem
 
 GENERIC_QUERY_WORDS = {
     "what", "is", "are", "your", "the", "a", "an", "about", "how", "do", "does",
-    "can", "could", "would", "please", "tell", "me", "our", "policy", "information", "details"
+    "can", "could", "would", "please", "tell", "me", "our", "policy", "policies", "information", "details"
 }
 
 class VerifierAgent:
@@ -45,7 +45,7 @@ class VerifierAgent:
         words = re.findall(r'\b[a-zA-Z0-9_]+\b', query.lower())
         substantive_q = [
             _stem(w) for w in words
-            if w not in STOP_WORDS and w not in GENERIC_QUERY_WORDS and len(w) > 2
+            if w not in STOP_WORDS and w not in GENERIC_QUERY_WORDS and _stem(w) not in GENERIC_QUERY_WORDS and len(w) > 2
         ]
         # If the query has no specific non-generic topic words, default to true
         if not substantive_q:
