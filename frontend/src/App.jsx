@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Header from './components/Header';
 import PresetQueries from './components/PresetQueries';
 import QueryInput from './components/QueryInput';
 import LoadingPipeline from './components/LoadingPipeline';
 import AnswerCard from './components/AnswerCard';
 import BehindTheScenes from './components/BehindTheScenes';
-import { queryPipeline, checkBackendHealth, BASE_URL } from './api/pipelineApi';
-import { AlertCircle, RefreshCw, Sparkles, Terminal } from 'lucide-react';
+import DocumentIngest from './components/DocumentIngest';
+import IndexedDocs from './components/IndexedDocs';
+import { queryPipeline, checkBackendHealth, fetchIndexedDocuments, BASE_URL } from './api/pipelineApi';
+import { AlertCircle, RefreshCw } from 'lucide-react';
 
 export default function App() {
   const [query, setQuery] = useState('');
@@ -14,6 +16,8 @@ export default function App() {
   const [error, setError] = useState(null);
   const [response, setResponse] = useState(null);
   const [backendHealth, setBackendHealth] = useState(null);
+  const [indexedDocs, setIndexedDocs] = useState([]);
+  const [loadingDocs, setLoadingDocs] = useState(false);
 
   const [settings, setSettings] = useState({
     top_k: 5,
@@ -21,7 +25,21 @@ export default function App() {
     enable_verification: true,
   });
 
-  // Check health on mount
+  const queryInputRef = useRef(null);
+
+  const loadDocuments = async () => {
+    setLoadingDocs(true);
+    try {
+      const docs = await fetchIndexedDocuments();
+      setIndexedDocs(docs);
+    } catch (err) {
+      console.warn('Failed to fetch indexed documents:', err);
+    } finally {
+      setLoadingDocs(false);
+    }
+  };
+
+  // Check health and load documents on mount
   useEffect(() => {
     let mounted = true;
     const pollHealth = async () => {
@@ -29,6 +47,7 @@ export default function App() {
       if (mounted) setBackendHealth(health);
     };
     pollHealth();
+    loadDocuments();
     const interval = setInterval(pollHealth, 15000);
     return () => {
       mounted = false;
@@ -63,15 +82,28 @@ export default function App() {
     }
   };
 
+  const handleSelectSuggestedQuery = (suggestedQ) => {
+    setQuery(suggestedQ);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    handleExecuteQuery(suggestedQ);
+  };
+
+  const handleQueryDocumentTopic = (docTitle) => {
+    const q = `What are the details regarding ${docTitle}?`;
+    setQuery(q);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    handleExecuteQuery(q);
+  };
+
   return (
     <div className="min-h-screen flex flex-col justify-between">
       {/* Header */}
       <Header backendHealth={backendHealth} />
 
       {/* Main Container */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 space-y-6">
+      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 space-y-8">
         {/* Intro Tagline */}
-        <div className="text-center max-w-2xl mx-auto mb-2">
+        <div className="text-center max-w-2xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
             Real-Time Factual Verification Engine
           </h2>
@@ -81,21 +113,24 @@ export default function App() {
           </p>
         </div>
 
-        {/* Query Input Box */}
-        <QueryInput
-          query={query}
-          setQuery={setQuery}
-          onSubmit={() => handleExecuteQuery()}
-          loading={loading}
-          settings={settings}
-          setSettings={setSettings}
-        />
+        {/* Section 1: Query & Analysis */}
+        <div className="space-y-4">
+          {/* Query Input Box */}
+          <QueryInput
+            query={query}
+            setQuery={setQuery}
+            onSubmit={() => handleExecuteQuery()}
+            loading={loading}
+            settings={settings}
+            setSettings={setSettings}
+          />
 
-        {/* Preset Query Pills */}
-        <PresetQueries
-          onSelect={(preset) => handleExecuteQuery(preset)}
-          disabled={loading}
-        />
+          {/* Preset Query Pills */}
+          <PresetQueries
+            onSelect={(preset) => handleExecuteQuery(preset)}
+            disabled={loading}
+          />
+        </div>
 
         {/* Error Notification */}
         {error && (
@@ -126,12 +161,28 @@ export default function App() {
 
         {/* Behind the Scenes Telemetry Trace */}
         {!loading && response && <BehindTheScenes response={response} />}
+
+        {/* Section 2: Document Ingestion */}
+        <div className="pt-6 border-t border-white/10 space-y-6">
+          <DocumentIngest
+            onIngestSuccess={() => loadDocuments()}
+            onSelectSuggestedQuery={handleSelectSuggestedQuery}
+          />
+
+          {/* Section 3: Currently Indexed Documents */}
+          <IndexedDocs
+            documents={indexedDocs}
+            loading={loadingDocs}
+            onRefresh={loadDocuments}
+            onQueryDocument={handleQueryDocumentTopic}
+          />
+        </div>
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 py-4 text-center text-xs text-slate-500">
-        <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>Autonomous Multi-Agent Pipeline • Production Architecture</span>
+      <footer className="border-t border-white/5 py-5 text-center text-xs text-slate-500">
+        <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <span>Autonomous Multi-Agent Pipeline • Reference Implementation</span>
           <div className="flex items-center gap-2 text-[11px] font-mono text-slate-400">
             <span>FastAPI: :8000</span>
             <span>•</span>

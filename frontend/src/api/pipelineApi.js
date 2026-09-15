@@ -50,4 +50,50 @@ export async function checkBackendHealth() {
   }
 }
 
+export async function ingestDocument({ title, text_content, metadata = {} }) {
+  const url = `${BASE_URL}/api/v1/ingest`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify({
+      title,
+      text_content,
+      metadata,
+    }),
+  });
+
+  if (!response.ok) {
+    let errorDetail = `HTTP ${response.status}: ${response.statusText}`;
+    try {
+      const errJson = await response.json();
+      if (errJson.detail) {
+        errorDetail = typeof errJson.detail === 'string'
+          ? errJson.detail
+          : JSON.stringify(errJson.detail);
+      }
+    } catch (_) {}
+    throw new Error(errorDetail);
+  }
+
+  return await response.json();
+}
+
+export async function fetchIndexedDocuments() {
+  const url = `${BASE_URL}/api/v1/documents`;
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: { 'Accept': 'application/json' },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch documents: HTTP ${response.status}`);
+  }
+
+  return await response.json();
+}
+
 export { BASE_URL };
+

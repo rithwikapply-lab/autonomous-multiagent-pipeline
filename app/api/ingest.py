@@ -14,6 +14,8 @@ router = APIRouter()
 # In-memory chunk store for testing/hybrid fallback
 IN_MEMORY_CHUNKS = []
 
+MAX_TEXT_CONTENT_CHARS = 50000
+
 def chunk_text(text: str, chunk_size: int = 500, chunk_overlap: int = 50) -> list:
     words = text.split()
     chunks = []
@@ -27,6 +29,48 @@ def chunk_text(text: str, chunk_size: int = 500, chunk_overlap: int = 50) -> lis
         start += (chunk_size - chunk_overlap)
     return chunks
 
+@router.get("/documents")
+async def list_documents(session: AsyncSession = Depends(get_db)):
+    """
+    Returns currently indexed documents and their chunk counts.
+    """
+    try:
+        if session is not None:
+            from sqlalchemy import select, func
+            stmt = select(
+                DocumentModel.id,
+                DocumentModel.title,
+                DocumentModel.created_at,
+                func.count(ChunkModel.id).label("chunks_count")
+            ).outerjoin(ChunkModel, DocumentModel.id == ChunkModel.doc_id).group_by(
+                DocumentModel.id, DocumentModel.title, DocumentModel.created_at
+            ).order_by(DocumentModel.created_at.desc())
+            res = await session.execute(stmt)
+            rows = res.all()
+            if rows:
+                return [
+                    {
+                        "doc_id": r.id,
+                        "title": r.title,
+                        "created_at": r.created_at.isoformat() if r.created_at else "",
+                        "chunks_count": r.chunks_count
+                    }
+                    for r in rows
+                ]
+    except Exception as e:
+        logger.warning(f"Database document listing failed: {e}")
+
+    # Fallback to IN_MEMORY_CHUNKS aggregation
+    docs_map = {}
+    for c in IN_MEMORY_CHUNKS:
+        d_id = c.get("doc_id", "unknown")
+        t = c.get("metadata", {}).get("title") or "Document"
+        if d_id not in docs_map:
+            docs_map[d_id] = {"doc_id": d_id, "title": t, "chunks_count": 0}
+        docs_map[d_id]["chunks_count"] += 1
+
+    return list(docs_map.values())
+
 @router.post("/ingest", response_model=DocumentIngestResponse)
 async def ingest_document(
     request: DocumentIngestRequest,
@@ -35,7 +79,20 @@ async def ingest_document(
     """
     Ingests an unstructured document, chunks it, populates the BM25 index,
     computes dense vector embeddings, and persists to pgvector.
+    Enforces a strict 50,000-character payload guardrail.
     """
+    if not request.text_content or not request.text_content.strip():
+        raise HTTPException(
+            status_code=400,
+            detail="Document text_content cannot be empty."
+        )
+
+    if len(request.text_content) > MAX_TEXT_CONTENT_CHARS:
+        raise HTTPException(
+            status_code=413,
+            detail=f"Document payload too large: {len(request.text_content):,} characters exceeds the maximum allowed limit of {MAX_TEXT_CONTENT_CHARS:,} characters."
+        )
+
     try:
         doc_id = request.doc_id or str(uuid.uuid4())
         raw_chunks = chunk_text(request.text_content, request.chunk_size, request.chunk_overlap)
