@@ -1,0 +1,533 @@
+[
+  {
+    "id": 1,
+    "type": "Specific (HR / Travel)",
+    "query": "What is the per diem meal limit for domestic and international business travel?",
+    "expected_domain": "Corporate Travel and Expense Reimbursement Policy 2026",
+    "elapsed_ms": 16.3,
+    "execution_time_ms": 1.27,
+    "cached": true,
+    "chunks_retrieved_count": 1,
+    "top_chunks": [
+      {
+        "title": "Unknown Title",
+        "score": null,
+        "snippet": "The Corporate Travel and Expense Policy outlines standards and reimbursement procedures fo"
+      }
+    ],
+    "executive_summary": "Analysis based on 1 verified document chunks: The Corporate Travel and Expense Policy outlines standards and reimbursement procedures for business travel undertaken by full-time personnel.",
+    "key_metrics": [
+      {
+        "metric_name": "business days prior to de",
+        "value": "14",
+        "source_chunk_id": "6831e64c-bf37-48cd-bfe7-2c82243216f6",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "hours continuous travel t",
+        "value": "6",
+        "source_chunk_id": "6831e64c-bf37-48cd-bfe7-2c82243216f6",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "continuous hours are elig",
+        "value": "6",
+        "source_chunk_id": "6831e64c-bf37-48cd-bfe7-2c82243216f6",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "per night in standard dom",
+        "value": "$250",
+        "source_chunk_id": "6831e64c-bf37-48cd-bfe7-2c82243216f6",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "per night in high",
+        "value": "$375",
+        "source_chunk_id": "6831e64c-bf37-48cd-bfe7-2c82243216f6",
+        "confidence": 0.92
+      }
+    ],
+    "confidence_score": 0.88,
+    "is_faithful": true,
+    "hallucination_score": 0.0,
+    "unsupported_claims": []
+  },
+  {
+    "id": 2,
+    "type": "Specific (Database HA)",
+    "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+    "expected_domain": "PostgreSQL Streaming Replication, Patroni Failover, and Connection Pooling",
+    "elapsed_ms": 4.9,
+    "execution_time_ms": 0.58,
+    "cached": true,
+    "chunks_retrieved_count": 2,
+    "top_chunks": [
+      {
+        "title": "Unknown Title",
+        "score": null,
+        "snippet": "This architectural specification defines high-availability topology, failover automation, "
+      },
+      {
+        "title": "Unknown Title",
+        "score": null,
+        "snippet": "This policy codifies the Disaster Recovery (DR) and High Availability (HA) commitments for"
+      }
+    ],
+    "executive_summary": "Analysis based on 2 verified document chunks: This architectural specification defines high-availability topology, failover automation, and connection pooling standards for our primary transactional database cluster.",
+    "key_metrics": [
+      {
+        "metric_name": "deployment running Patron",
+        "value": "16",
+        "source_chunk_id": "9cdd4e65-6d8d-4f92-9edf-13f7017490c1",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "operates as the active Re",
+        "value": "1",
+        "source_chunk_id": "9cdd4e65-6d8d-4f92-9edf-13f7017490c1",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "and",
+        "value": "2",
+        "source_chunk_id": "9cdd4e65-6d8d-4f92-9edf-13f7017490c1",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "operate as synchronous ph",
+        "value": "3",
+        "source_chunk_id": "9cdd4e65-6d8d-4f92-9edf-13f7017490c1",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "milliseconds",
+        "value": "000",
+        "source_chunk_id": "9cdd4e65-6d8d-4f92-9edf-13f7017490c1",
+        "confidence": 0.92
+      }
+    ],
+    "confidence_score": 0.88,
+    "is_faithful": true,
+    "hallucination_score": 0.0,
+    "unsupported_claims": []
+  },
+  {
+    "id": 3,
+    "type": "Specific (Enterprise SLA)",
+    "query": "What service credit is issued if monthly uptime falls below 95%?",
+    "expected_domain": "Enterprise Cloud Infrastructure Service Level Agreement (SLA)",
+    "elapsed_ms": 3.1,
+    "execution_time_ms": 0.35,
+    "cached": true,
+    "chunks_retrieved_count": 1,
+    "top_chunks": [
+      {
+        "title": "Unknown Title",
+        "score": null,
+        "snippet": "This Service Level Agreement ('SLA') defines availability commitments, measurement methodo"
+      }
+    ],
+    "executive_summary": "Analysis based on 1 verified document chunks: This Service Level Agreement ('SLA') defines availability commitments, measurement methodologies, and service credit remedies for customers subscribed to our Enterprise Cloud Infrastructure tier.",
+    "key_metrics": [
+      {
+        "metric_name": "across all production API",
+        "value": "99.99%",
+        "source_chunk_id": "eb78f5c7-ec77-4d6f-ac10-fa693bf47f6c",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "commitment",
+        "value": "99.99%",
+        "source_chunk_id": "eb78f5c7-ec77-4d6f-ac10-fa693bf47f6c",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "to",
+        "value": "99.00%",
+        "source_chunk_id": "eb78f5c7-ec77-4d6f-ac10-fa693bf47f6c",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "Monthly Uptime",
+        "value": "99.98%",
+        "source_chunk_id": "eb78f5c7-ec77-4d6f-ac10-fa693bf47f6c",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "Service Credit of monthly",
+        "value": "10%",
+        "source_chunk_id": "eb78f5c7-ec77-4d6f-ac10-fa693bf47f6c",
+        "confidence": 0.92
+      }
+    ],
+    "confidence_score": 0.88,
+    "is_faithful": true,
+    "hallucination_score": 0.0,
+    "unsupported_claims": []
+  },
+  {
+    "id": 4,
+    "type": "Specific (DevOps / Canary)",
+    "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+    "expected_domain": "Canary Deployments, Progressive Delivery, and Automated Rollbacks",
+    "elapsed_ms": 3.7,
+    "execution_time_ms": 0.92,
+    "cached": true,
+    "chunks_retrieved_count": 1,
+    "top_chunks": [
+      {
+        "title": "Unknown Title",
+        "score": null,
+        "snippet": "This operational specification outlines progressive canary rollout strategies, automated h"
+      }
+    ],
+    "executive_summary": "Analysis based on 1 verified document chunks: This operational specification outlines progressive canary rollout strategies, automated health telemetry gates, and rollback mechanisms managed via ArgoCD.",
+    "key_metrics": [
+      {
+        "metric_name": "of running application po",
+        "value": "100%",
+        "source_chunk_id": "c2908a3c-db60-430a-9dc0-c0fb2423acb5",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "of production traffic rou",
+        "value": "5%",
+        "source_chunk_id": "c2908a3c-db60-430a-9dc0-c0fb2423acb5",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "minutes",
+        "value": "15",
+        "source_chunk_id": "c2908a3c-db60-430a-9dc0-c0fb2423acb5",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "for",
+        "value": "25%",
+        "source_chunk_id": "c2908a3c-db60-430a-9dc0-c0fb2423acb5",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "minutes",
+        "value": "30",
+        "source_chunk_id": "c2908a3c-db60-430a-9dc0-c0fb2423acb5",
+        "confidence": 0.92
+      }
+    ],
+    "confidence_score": 0.88,
+    "is_faithful": true,
+    "hallucination_score": 0.0,
+    "unsupported_claims": []
+  },
+  {
+    "id": 5,
+    "type": "Specific (Security / Secrets)",
+    "query": "What is the Time-to-Live for dynamic database credentials generated by HashiCorp Vault?",
+    "expected_domain": "Secrets Management, HashiCorp Vault, and Dynamic Credential Rotation",
+    "elapsed_ms": 4.6,
+    "execution_time_ms": 0.61,
+    "cached": true,
+    "chunks_retrieved_count": 1,
+    "top_chunks": [
+      {
+        "title": "Unknown Title",
+        "score": null,
+        "snippet": "This standard operating procedure defines secrets management architecture, dynamic credent"
+      }
+    ],
+    "executive_summary": "Analysis based on 1 verified document chunks: This standard operating procedure defines secrets management architecture, dynamic credential generation, and encryption-at-rest policies using HashiCorp Vault.",
+    "key_metrics": [
+      {
+        "metric_name": "minutes",
+        "value": "60",
+        "source_chunk_id": "7c93e88e-d128-4ac8-9546-fd4a98b7a179",
+        "confidence": 0.92
+      }
+    ],
+    "confidence_score": 0.88,
+    "is_faithful": true,
+    "hallucination_score": 0.0,
+    "unsupported_claims": []
+  },
+  {
+    "id": 6,
+    "type": "Ambiguous (Refunds & Cancellations)",
+    "query": "Can I get my money back if I cancel my subscription early?",
+    "expected_domain": "Subscription Cancellation or Refund Policy",
+    "elapsed_ms": 3.2,
+    "execution_time_ms": 0.42,
+    "cached": true,
+    "chunks_retrieved_count": 1,
+    "top_chunks": [
+      {
+        "title": "Unknown Title",
+        "score": null,
+        "snippet": "This document defines the formal cancellation workflows, grace periods, and refund evaluat"
+      }
+    ],
+    "executive_summary": "Analysis based on 1 verified document chunks: This document defines the formal cancellation workflows, grace periods, and refund evaluation criteria for all software subscription plans.",
+    "key_metrics": [
+      {
+        "metric_name": "days of renewal requestin",
+        "value": "7",
+        "source_chunk_id": "c460212f-41f9-4012-8816-82330c9efdf4",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "days",
+        "value": "7",
+        "source_chunk_id": "c460212f-41f9-4012-8816-82330c9efdf4",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "full refund of the renewa",
+        "value": "100%",
+        "source_chunk_id": "c460212f-41f9-4012-8816-82330c9efdf4",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "to",
+        "value": "5",
+        "source_chunk_id": "c460212f-41f9-4012-8816-82330c9efdf4",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "business days",
+        "value": "7",
+        "source_chunk_id": "c460212f-41f9-4012-8816-82330c9efdf4",
+        "confidence": 0.92
+      }
+    ],
+    "confidence_score": 0.88,
+    "is_faithful": true,
+    "hallucination_score": 0.0,
+    "unsupported_claims": []
+  },
+  {
+    "id": 7,
+    "type": "Ambiguous (Hardware Replacement)",
+    "query": "How is damaged or defective hardware replaced?",
+    "expected_domain": "Hardware Appliance Replacement or Asset Offboarding",
+    "elapsed_ms": 2.9,
+    "execution_time_ms": 0.37,
+    "cached": true,
+    "chunks_retrieved_count": 1,
+    "top_chunks": [
+      {
+        "title": "Unknown Title",
+        "score": null,
+        "snippet": "For customers deploying hybrid on-premises hardware appliances (Edge Inference Racks, Loca"
+      }
+    ],
+    "executive_summary": "Analysis based on 1 verified document chunks: For customers deploying hybrid on-premises hardware appliances (Edge Inference Racks, Local Embedding Nodes), this agreement specifies hardware warranty, repair, and replacement guarantees.",
+    "key_metrics": [
+      {
+        "metric_name": "Metro Areas",
+        "value": "1",
+        "source_chunk_id": "efc787c3-271b-49eb-b692-7f728edb5db5",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "hours of diagnostic confi",
+        "value": "12",
+        "source_chunk_id": "efc787c3-271b-49eb-b692-7f728edb5db5",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "Domestic Regions",
+        "value": "2",
+        "source_chunk_id": "efc787c3-271b-49eb-b692-7f728edb5db5",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "hours of ticket opening",
+        "value": "24",
+        "source_chunk_id": "efc787c3-271b-49eb-b692-7f728edb5db5",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "business days of receivin",
+        "value": "14",
+        "source_chunk_id": "efc787c3-271b-49eb-b692-7f728edb5db5",
+        "confidence": 0.92
+      }
+    ],
+    "confidence_score": 0.88,
+    "is_faithful": true,
+    "hallucination_score": 0.0,
+    "unsupported_claims": []
+  },
+  {
+    "id": 8,
+    "type": "Ambiguous (Audit Log Retention)",
+    "query": "How long are security audit logs retained before permanent deletion?",
+    "expected_domain": "Audit Logging, Data Retention, or Log Aggregation",
+    "elapsed_ms": 2.7,
+    "execution_time_ms": 0.38,
+    "cached": true,
+    "chunks_retrieved_count": 2,
+    "top_chunks": [
+      {
+        "title": "Data Retention",
+        "score": null,
+        "snippet": "User data is retained for 90 days after account deletion before permanent removal, in case"
+      },
+      {
+        "title": "Unknown Title",
+        "score": null,
+        "snippet": "This policy establishes corporate record retention schedules, automated database archival "
+      }
+    ],
+    "executive_summary": "Analysis based on 2 verified document chunks: User data is retained for 90 days after account deletion before permanent removal, in case the user wants to reactivate.",
+    "key_metrics": [
+      {
+        "metric_name": "days after account deleti",
+        "value": "90",
+        "source_chunk_id": "4cf8907c-6b92-42ea-8218-4e1de5eb5430",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "days beyond that for disa",
+        "value": "30",
+        "source_chunk_id": "4cf8907c-6b92-42ea-8218-4e1de5eb5430",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "calendar years to comply",
+        "value": "7",
+        "source_chunk_id": "43524d4b-add8-4e77-8412-193a8d5c6c5f",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "calendar days post",
+        "value": "30",
+        "source_chunk_id": "43524d4b-add8-4e77-8412-193a8d5c6c5f",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "calendar days in hot",
+        "value": "365",
+        "source_chunk_id": "43524d4b-add8-4e77-8412-193a8d5c6c5f",
+        "confidence": 0.92
+      }
+    ],
+    "confidence_score": 0.88,
+    "is_faithful": true,
+    "hallucination_score": 0.0,
+    "unsupported_claims": []
+  },
+  {
+    "id": 9,
+    "type": "Ambiguous (Extended Leaves)",
+    "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+    "expected_domain": "Parental Leave or Sabbatical Program",
+    "elapsed_ms": 2.2,
+    "execution_time_ms": 0.23,
+    "cached": true,
+    "chunks_retrieved_count": 2,
+    "top_chunks": [
+      {
+        "title": "Unknown Title",
+        "score": null,
+        "snippet": "The Employee Sabbatical Program recognizes long-term dedication, preventing cognitive burn"
+      },
+      {
+        "title": "Unknown Title",
+        "score": null,
+        "snippet": "Our organization believes in supporting parents during significant family transitions. Thi"
+      }
+    ],
+    "executive_summary": "Analysis based on 2 verified document chunks: The Employee Sabbatical Program recognizes long-term dedication, preventing cognitive burnout by offering extended paid leave for personal enrichment, research, or travel.",
+    "key_metrics": [
+      {
+        "metric_name": "continuous years of full",
+        "value": "5",
+        "source_chunk_id": "1f7f9495-8a2d-4258-9b7e-9ca0771b627b",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "business days",
+        "value": "20",
+        "source_chunk_id": "1f7f9495-8a2d-4258-9b7e-9ca0771b627b",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "days of accrued Paid Time",
+        "value": "10",
+        "source_chunk_id": "1f7f9495-8a2d-4258-9b7e-9ca0771b627b",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "years",
+        "value": "10",
+        "source_chunk_id": "1f7f9495-8a2d-4258-9b7e-9ca0771b627b",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "years",
+        "value": "15",
+        "source_chunk_id": "1f7f9495-8a2d-4258-9b7e-9ca0771b627b",
+        "confidence": 0.92
+      }
+    ],
+    "confidence_score": 0.88,
+    "is_faithful": true,
+    "hallucination_score": 0.0,
+    "unsupported_claims": []
+  },
+  {
+    "id": 10,
+    "type": "Out-of-Domain (No Information Fallback)",
+    "query": "What is your policy and discount on cryptocurrency payments?",
+    "expected_domain": "None (Honest admission of no information)",
+    "elapsed_ms": 2.8,
+    "execution_time_ms": 0.35,
+    "cached": true,
+    "chunks_retrieved_count": 1,
+    "top_chunks": [
+      {
+        "title": "Unknown Title",
+        "score": null,
+        "snippet": "This policy establishes operational guidelines, annual pricing adjustments, and renewal no"
+      }
+    ],
+    "executive_summary": "Analysis based on 1 verified document chunks: This policy establishes operational guidelines, annual pricing adjustments, and renewal notification timelines for multi-year enterprise software contracts.",
+    "key_metrics": [
+      {
+        "metric_name": "calendar days prior to co",
+        "value": "60",
+        "source_chunk_id": "61dfbab3-9046-4bf7-9c3d-4b9672a4d30b",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "days before expiration",
+        "value": "90",
+        "source_chunk_id": "61dfbab3-9046-4bf7-9c3d-4b9672a4d30b",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "or the annual Consumer Pr",
+        "value": "5.0%",
+        "source_chunk_id": "61dfbab3-9046-4bf7-9c3d-4b9672a4d30b",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "discount for a",
+        "value": "10%",
+        "source_chunk_id": "61dfbab3-9046-4bf7-9c3d-4b9672a4d30b",
+        "confidence": 0.92
+      },
+      {
+        "metric_name": "discount for a",
+        "value": "20%",
+        "source_chunk_id": "61dfbab3-9046-4bf7-9c3d-4b9672a4d30b",
+        "confidence": 0.92
+      }
+    ],
+    "confidence_score": 0.88,
+    "is_faithful": true,
+    "hallucination_score": 0.0,
+    "unsupported_claims": []
+  }
+]

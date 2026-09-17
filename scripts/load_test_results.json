@@ -1,0 +1,1862 @@
+{
+  "total_requests": 200,
+  "concurrency": 30,
+  "success_count": 200,
+  "failure_count": 0,
+  "success_rate_percent": 100.0,
+  "duration_seconds": 30.0,
+  "throughput_rps": 6.67,
+  "group_1_cold_miss": {
+    "stats_http_latency_ms": {
+      "count": 26,
+      "min": 7014.85,
+      "p50": 12023.51,
+      "p90": 27489.21,
+      "p95": 29014.11,
+      "p99": 29776.12,
+      "max": 29797.02,
+      "mean": 15845.59
+    },
+    "stats_server_execution_time_ms": {
+      "count": 26,
+      "min": 1133.62,
+      "p50": 6708.95,
+      "p90": 20604.83,
+      "p95": 23041.03,
+      "p99": 26319.73,
+      "max": 27432.72,
+      "mean": 8970.6
+    }
+  },
+  "group_2_warm_hit": {
+    "stats_http_latency_ms": {
+      "count": 174,
+      "min": 13.95,
+      "p50": 1738.34,
+      "p90": 5824.71,
+      "p95": 12304.03,
+      "p99": 24054.12,
+      "max": 24961.74,
+      "mean": 2795.7
+    },
+    "stats_server_execution_time_ms": {
+      "count": 174,
+      "min": 0.11,
+      "p50": 5.8,
+      "p90": 1115.7,
+      "p95": 1650.28,
+      "p99": 4906.14,
+      "max": 4914.91,
+      "mean": 462.3
+    }
+  },
+  "docker_stats": {
+    "initial": "0.51%\t1.181GiB / 7.748GiB\t15.24%",
+    "peak_cpu_percent": 763.01,
+    "peak_memory_str": "1.37GiB",
+    "peak_memory_percent": 17.68,
+    "final": "0.51%\t1.183GiB / 7.748GiB\t15.27%"
+  },
+  "requests": [
+    {
+      "req_id": 4,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 11225.4,
+      "cached": false,
+      "execution_time_ms": 6702.95,
+      "error": null
+    },
+    {
+      "req_id": 5,
+      "query": "What service credit is issued if monthly uptime falls below 95%?",
+      "status_code": 200,
+      "elapsed_ms": 11227.1,
+      "cached": false,
+      "execution_time_ms": 4734.19,
+      "error": null
+    },
+    {
+      "req_id": 3,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 11227.66,
+      "cached": false,
+      "execution_time_ms": 1133.62,
+      "error": null
+    },
+    {
+      "req_id": 11,
+      "query": "What is the per diem meal limit for domestic and international business travel?",
+      "status_code": 200,
+      "elapsed_ms": 11229.6,
+      "cached": false,
+      "execution_time_ms": 3313.65,
+      "error": null
+    },
+    {
+      "req_id": 10,
+      "query": "How is damaged or defective hardware replaced?",
+      "status_code": 200,
+      "elapsed_ms": 11230.2,
+      "cached": false,
+      "execution_time_ms": 2277.46,
+      "error": null
+    },
+    {
+      "req_id": 14,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 11230.19,
+      "cached": false,
+      "execution_time_ms": 5726.34,
+      "error": null
+    },
+    {
+      "req_id": 6,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 12284.08,
+      "cached": false,
+      "execution_time_ms": 8362.8,
+      "error": null
+    },
+    {
+      "req_id": 0,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 12304.03,
+      "cached": true,
+      "execution_time_ms": 2655.76,
+      "error": null
+    },
+    {
+      "req_id": 12,
+      "query": "What is the per diem meal limit for domestic and international business travel?",
+      "status_code": 200,
+      "elapsed_ms": 12286.12,
+      "cached": false,
+      "execution_time_ms": 9581.05,
+      "error": null
+    },
+    {
+      "req_id": 13,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 12289.01,
+      "cached": false,
+      "execution_time_ms": 11172.65,
+      "error": null
+    },
+    {
+      "req_id": 23,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 12289.2,
+      "cached": false,
+      "execution_time_ms": 12229.33,
+      "error": null
+    },
+    {
+      "req_id": 1,
+      "query": "What is the per diem meal limit for domestic and international business travel?",
+      "status_code": 200,
+      "elapsed_ms": 12293.03,
+      "cached": true,
+      "execution_time_ms": 8.29,
+      "error": null
+    },
+    {
+      "req_id": 33,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 1068.3,
+      "cached": true,
+      "execution_time_ms": 9.95,
+      "error": null
+    },
+    {
+      "req_id": 35,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 1068.84,
+      "cached": true,
+      "execution_time_ms": 9.95,
+      "error": null
+    },
+    {
+      "req_id": 32,
+      "query": "What service credit is issued if monthly uptime falls below 95%?",
+      "status_code": 200,
+      "elapsed_ms": 1072.78,
+      "cached": true,
+      "execution_time_ms": 10.74,
+      "error": null
+    },
+    {
+      "req_id": 36,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 1033.02,
+      "cached": true,
+      "execution_time_ms": 21.18,
+      "error": null
+    },
+    {
+      "req_id": 27,
+      "query": "What is the per diem meal limit for domestic and international business travel?",
+      "status_code": 200,
+      "elapsed_ms": 13316.17,
+      "cached": true,
+      "execution_time_ms": 21.09,
+      "error": null
+    },
+    {
+      "req_id": 37,
+      "query": "How is damaged or defective hardware replaced?",
+      "status_code": 200,
+      "elapsed_ms": 1044.18,
+      "cached": true,
+      "execution_time_ms": 1036.07,
+      "error": null
+    },
+    {
+      "req_id": 38,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 1046.82,
+      "cached": true,
+      "execution_time_ms": 1036.16,
+      "error": null
+    },
+    {
+      "req_id": 20,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 13332.44,
+      "cached": true,
+      "execution_time_ms": 1036.33,
+      "error": null
+    },
+    {
+      "req_id": 15,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 18234.8,
+      "cached": true,
+      "execution_time_ms": 4914.91,
+      "error": null
+    },
+    {
+      "req_id": 2,
+      "query": "What is the Time-to-Live for dynamic database credentials generated by HashiCorp Vault?",
+      "status_code": 200,
+      "elapsed_ms": 18238.75,
+      "cached": false,
+      "execution_time_ms": 2092.71,
+      "error": null
+    },
+    {
+      "req_id": 43,
+      "query": "What is the per diem meal limit for domestic and international business travel?",
+      "status_code": 200,
+      "elapsed_ms": 5937.85,
+      "cached": true,
+      "execution_time_ms": 4905.45,
+      "error": null
+    },
+    {
+      "req_id": 42,
+      "query": "What is the Time-to-Live for dynamic database credentials generated by HashiCorp Vault?",
+      "status_code": 200,
+      "elapsed_ms": 5939.43,
+      "cached": true,
+      "execution_time_ms": 4906.55,
+      "error": null
+    },
+    {
+      "req_id": 30,
+      "query": "Can I get my money back if I cancel my subscription early?",
+      "status_code": 200,
+      "elapsed_ms": 7016.91,
+      "cached": false,
+      "execution_time_ms": 2956.77,
+      "error": null
+    },
+    {
+      "req_id": 31,
+      "query": "What is the Time-to-Live for dynamic database credentials generated by HashiCorp Vault?",
+      "status_code": 200,
+      "elapsed_ms": 7014.85,
+      "cached": false,
+      "execution_time_ms": 2082.2,
+      "error": null
+    },
+    {
+      "req_id": 18,
+      "query": "What is the per diem meal limit for domestic and international business travel?",
+      "status_code": 200,
+      "elapsed_ms": 18242.19,
+      "cached": true,
+      "execution_time_ms": 4906.14,
+      "error": null
+    },
+    {
+      "req_id": 46,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 6563.26,
+      "cached": true,
+      "execution_time_ms": 21.58,
+      "error": null
+    },
+    {
+      "req_id": 45,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 6567.6,
+      "cached": true,
+      "execution_time_ms": 21.82,
+      "error": null
+    },
+    {
+      "req_id": 22,
+      "query": "How is damaged or defective hardware replaced?",
+      "status_code": 200,
+      "elapsed_ms": 19883.49,
+      "cached": true,
+      "execution_time_ms": 21.65,
+      "error": null
+    },
+    {
+      "req_id": 19,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 19884.27,
+      "cached": false,
+      "execution_time_ms": 5025.69,
+      "error": null
+    },
+    {
+      "req_id": 34,
+      "query": "Can I get my money back if I cancel my subscription early?",
+      "status_code": 200,
+      "elapsed_ms": 8654.2,
+      "cached": false,
+      "execution_time_ms": 5930.19,
+      "error": null
+    },
+    {
+      "req_id": 47,
+      "query": "How is damaged or defective hardware replaced?",
+      "status_code": 200,
+      "elapsed_ms": 9893.59,
+      "cached": true,
+      "execution_time_ms": 1650.15,
+      "error": null
+    },
+    {
+      "req_id": 48,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 9891.92,
+      "cached": true,
+      "execution_time_ms": 1650.28,
+      "error": null
+    },
+    {
+      "req_id": 49,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 9893.82,
+      "cached": true,
+      "execution_time_ms": 1650.37,
+      "error": null
+    },
+    {
+      "req_id": 21,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 23229.6,
+      "cached": true,
+      "execution_time_ms": 3345.02,
+      "error": null
+    },
+    {
+      "req_id": 41,
+      "query": "What is your policy on cryptocurrency payments?",
+      "status_code": 200,
+      "elapsed_ms": 10939.76,
+      "cached": false,
+      "execution_time_ms": 6564.77,
+      "error": null
+    },
+    {
+      "req_id": 39,
+      "query": "Can I get my money back if I cancel my subscription early?",
+      "status_code": 200,
+      "elapsed_ms": 10942.23,
+      "cached": false,
+      "execution_time_ms": 6772.59,
+      "error": null
+    },
+    {
+      "req_id": 40,
+      "query": "Can I get my money back if I cancel my subscription early?",
+      "status_code": 200,
+      "elapsed_ms": 10944.22,
+      "cached": false,
+      "execution_time_ms": 7403.08,
+      "error": null
+    },
+    {
+      "req_id": 55,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 5809.82,
+      "cached": true,
+      "execution_time_ms": 6.98,
+      "error": null
+    },
+    {
+      "req_id": 53,
+      "query": "What is your policy on cryptocurrency payments?",
+      "status_code": 200,
+      "elapsed_ms": 5815.03,
+      "cached": true,
+      "execution_time_ms": 7.02,
+      "error": null
+    },
+    {
+      "req_id": 29,
+      "query": "How is damaged or defective hardware replaced?",
+      "status_code": 200,
+      "elapsed_ms": 24054.12,
+      "cached": true,
+      "execution_time_ms": 7.1,
+      "error": null
+    },
+    {
+      "req_id": 50,
+      "query": "What is the Time-to-Live for dynamic database credentials generated by HashiCorp Vault?",
+      "status_code": 200,
+      "elapsed_ms": 5820.84,
+      "cached": true,
+      "execution_time_ms": 6.91,
+      "error": null
+    },
+    {
+      "req_id": 51,
+      "query": "What is your policy on cryptocurrency payments?",
+      "status_code": 200,
+      "elapsed_ms": 5824.71,
+      "cached": true,
+      "execution_time_ms": 6.62,
+      "error": null
+    },
+    {
+      "req_id": 16,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 24062.09,
+      "cached": false,
+      "execution_time_ms": 10922.01,
+      "error": null
+    },
+    {
+      "req_id": 52,
+      "query": "Can I get my money back if I cancel my subscription early?",
+      "status_code": 200,
+      "elapsed_ms": 5822.58,
+      "cached": true,
+      "execution_time_ms": 6.7,
+      "error": null
+    },
+    {
+      "req_id": 56,
+      "query": "What is the per diem meal limit for domestic and international business travel?",
+      "status_code": 200,
+      "elapsed_ms": 5818.22,
+      "cached": true,
+      "execution_time_ms": 7.05,
+      "error": null
+    },
+    {
+      "req_id": 54,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 5820.64,
+      "cached": true,
+      "execution_time_ms": 6.78,
+      "error": null
+    },
+    {
+      "req_id": 44,
+      "query": "How long are security audit logs retained before permanent deletion?",
+      "status_code": 200,
+      "elapsed_ms": 11762.93,
+      "cached": false,
+      "execution_time_ms": 8317.2,
+      "error": null
+    },
+    {
+      "req_id": 58,
+      "query": "What is the Time-to-Live for dynamic database credentials generated by HashiCorp Vault?",
+      "status_code": 200,
+      "elapsed_ms": 5068.94,
+      "cached": true,
+      "execution_time_ms": 829.96,
+      "error": null
+    },
+    {
+      "req_id": 57,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 5071.29,
+      "cached": true,
+      "execution_time_ms": 829.87,
+      "error": null
+    },
+    {
+      "req_id": 61,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 5070.71,
+      "cached": true,
+      "execution_time_ms": 830.02,
+      "error": null
+    },
+    {
+      "req_id": 60,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 5071.76,
+      "cached": true,
+      "execution_time_ms": 830.05,
+      "error": null
+    },
+    {
+      "req_id": 59,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 5072.77,
+      "cached": true,
+      "execution_time_ms": 830.02,
+      "error": null
+    },
+    {
+      "req_id": 7,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 24960.17,
+      "cached": true,
+      "execution_time_ms": 830.06,
+      "error": null
+    },
+    {
+      "req_id": 26,
+      "query": "What is the Time-to-Live for dynamic database credentials generated by HashiCorp Vault?",
+      "status_code": 200,
+      "elapsed_ms": 24961.74,
+      "cached": true,
+      "execution_time_ms": 1726.45,
+      "error": null
+    },
+    {
+      "req_id": 25,
+      "query": "What is your policy on cryptocurrency payments?",
+      "status_code": 200,
+      "elapsed_ms": 24962.28,
+      "cached": false,
+      "execution_time_ms": 5821.06,
+      "error": null
+    },
+    {
+      "req_id": 24,
+      "query": "How long are security audit logs retained before permanent deletion?",
+      "status_code": 200,
+      "elapsed_ms": 24967.88,
+      "cached": false,
+      "execution_time_ms": 6714.96,
+      "error": null
+    },
+    {
+      "req_id": 67,
+      "query": "Can I get my money back if I cancel my subscription early?",
+      "status_code": 200,
+      "elapsed_ms": 1736.23,
+      "cached": true,
+      "execution_time_ms": 5.11,
+      "error": null
+    },
+    {
+      "req_id": 62,
+      "query": "How is damaged or defective hardware replaced?",
+      "status_code": 200,
+      "elapsed_ms": 1744.44,
+      "cached": true,
+      "execution_time_ms": 4.66,
+      "error": null
+    },
+    {
+      "req_id": 66,
+      "query": "What service credit is issued if monthly uptime falls below 95%?",
+      "status_code": 200,
+      "elapsed_ms": 1737.65,
+      "cached": true,
+      "execution_time_ms": 4.89,
+      "error": null
+    },
+    {
+      "req_id": 63,
+      "query": "What is the Time-to-Live for dynamic database credentials generated by HashiCorp Vault?",
+      "status_code": 200,
+      "elapsed_ms": 1744.28,
+      "cached": true,
+      "execution_time_ms": 4.71,
+      "error": null
+    },
+    {
+      "req_id": 65,
+      "query": "Can I get my money back if I cancel my subscription early?",
+      "status_code": 200,
+      "elapsed_ms": 1739.02,
+      "cached": true,
+      "execution_time_ms": 4.81,
+      "error": null
+    },
+    {
+      "req_id": 64,
+      "query": "How long are security audit logs retained before permanent deletion?",
+      "status_code": 200,
+      "elapsed_ms": 1743.53,
+      "cached": true,
+      "execution_time_ms": 5.02,
+      "error": null
+    },
+    {
+      "req_id": 68,
+      "query": "Can I get my money back if I cancel my subscription early?",
+      "status_code": 200,
+      "elapsed_ms": 1736.66,
+      "cached": true,
+      "execution_time_ms": 5.05,
+      "error": null
+    },
+    {
+      "req_id": 69,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 2322.72,
+      "cached": true,
+      "execution_time_ms": 4.4,
+      "error": null
+    },
+    {
+      "req_id": 74,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 2312.86,
+      "cached": true,
+      "execution_time_ms": 4.67,
+      "error": null
+    },
+    {
+      "req_id": 78,
+      "query": "How is damaged or defective hardware replaced?",
+      "status_code": 200,
+      "elapsed_ms": 2315.91,
+      "cached": true,
+      "execution_time_ms": 4.71,
+      "error": null
+    },
+    {
+      "req_id": 77,
+      "query": "How long are security audit logs retained before permanent deletion?",
+      "status_code": 200,
+      "elapsed_ms": 2317.21,
+      "cached": true,
+      "execution_time_ms": 4.58,
+      "error": null
+    },
+    {
+      "req_id": 73,
+      "query": "What service credit is issued if monthly uptime falls below 95%?",
+      "status_code": 200,
+      "elapsed_ms": 2321.38,
+      "cached": true,
+      "execution_time_ms": 4.48,
+      "error": null
+    },
+    {
+      "req_id": 72,
+      "query": "What is your policy on cryptocurrency payments?",
+      "status_code": 200,
+      "elapsed_ms": 2326.16,
+      "cached": true,
+      "execution_time_ms": 4.54,
+      "error": null
+    },
+    {
+      "req_id": 76,
+      "query": "What service credit is issued if monthly uptime falls below 95%?",
+      "status_code": 200,
+      "elapsed_ms": 2319.54,
+      "cached": true,
+      "execution_time_ms": 4.47,
+      "error": null
+    },
+    {
+      "req_id": 71,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 2327.81,
+      "cached": true,
+      "execution_time_ms": 4.63,
+      "error": null
+    },
+    {
+      "req_id": 75,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 2321.36,
+      "cached": true,
+      "execution_time_ms": 4.64,
+      "error": null
+    },
+    {
+      "req_id": 70,
+      "query": "What is the Time-to-Live for dynamic database credentials generated by HashiCorp Vault?",
+      "status_code": 200,
+      "elapsed_ms": 2329.55,
+      "cached": true,
+      "execution_time_ms": 4.52,
+      "error": null
+    },
+    {
+      "req_id": 28,
+      "query": "What service credit is issued if monthly uptime falls below 95%?",
+      "status_code": 200,
+      "elapsed_ms": 27489.21,
+      "cached": false,
+      "execution_time_ms": 26319.73,
+      "error": null
+    },
+    {
+      "req_id": 83,
+      "query": "What is the per diem meal limit for domestic and international business travel?",
+      "status_code": 200,
+      "elapsed_ms": 2535.35,
+      "cached": true,
+      "execution_time_ms": 890.52,
+      "error": null
+    },
+    {
+      "req_id": 92,
+      "query": "Can I get my money back if I cancel my subscription early?",
+      "status_code": 200,
+      "elapsed_ms": 2521.24,
+      "cached": true,
+      "execution_time_ms": 890.09,
+      "error": null
+    },
+    {
+      "req_id": 81,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 2538.58,
+      "cached": true,
+      "execution_time_ms": 1116.61,
+      "error": null
+    },
+    {
+      "req_id": 87,
+      "query": "How is damaged or defective hardware replaced?",
+      "status_code": 200,
+      "elapsed_ms": 2525.1,
+      "cached": true,
+      "execution_time_ms": 890.35,
+      "error": null
+    },
+    {
+      "req_id": 94,
+      "query": "How long are security audit logs retained before permanent deletion?",
+      "status_code": 200,
+      "elapsed_ms": 2522.31,
+      "cached": true,
+      "execution_time_ms": 1116.63,
+      "error": null
+    },
+    {
+      "req_id": 89,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 2524.87,
+      "cached": true,
+      "execution_time_ms": 1116.42,
+      "error": null
+    },
+    {
+      "req_id": 93,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 2523.2,
+      "cached": true,
+      "execution_time_ms": 890.21,
+      "error": null
+    },
+    {
+      "req_id": 82,
+      "query": "Can I get my money back if I cancel my subscription early?",
+      "status_code": 200,
+      "elapsed_ms": 2539.09,
+      "cached": true,
+      "execution_time_ms": 890.09,
+      "error": null
+    },
+    {
+      "req_id": 88,
+      "query": "What is the Time-to-Live for dynamic database credentials generated by HashiCorp Vault?",
+      "status_code": 200,
+      "elapsed_ms": 2528.63,
+      "cached": true,
+      "execution_time_ms": 1116.75,
+      "error": null
+    },
+    {
+      "req_id": 85,
+      "query": "What is the per diem meal limit for domestic and international business travel?",
+      "status_code": 200,
+      "elapsed_ms": 2534.65,
+      "cached": true,
+      "execution_time_ms": 1116.82,
+      "error": null
+    },
+    {
+      "req_id": 86,
+      "query": "Can I get my money back if I cancel my subscription early?",
+      "status_code": 200,
+      "elapsed_ms": 2534.18,
+      "cached": true,
+      "execution_time_ms": 1116.54,
+      "error": null
+    },
+    {
+      "req_id": 80,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 2546.38,
+      "cached": true,
+      "execution_time_ms": 1116.35,
+      "error": null
+    },
+    {
+      "req_id": 91,
+      "query": "What is your policy on cryptocurrency payments?",
+      "status_code": 200,
+      "elapsed_ms": 2528.91,
+      "cached": true,
+      "execution_time_ms": 890.59,
+      "error": null
+    },
+    {
+      "req_id": 79,
+      "query": "What is the Time-to-Live for dynamic database credentials generated by HashiCorp Vault?",
+      "status_code": 200,
+      "elapsed_ms": 2547.89,
+      "cached": true,
+      "execution_time_ms": 1115.7,
+      "error": null
+    },
+    {
+      "req_id": 90,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 2530.03,
+      "cached": true,
+      "execution_time_ms": 890.31,
+      "error": null
+    },
+    {
+      "req_id": 84,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 2543.34,
+      "cached": true,
+      "execution_time_ms": 890.43,
+      "error": null
+    },
+    {
+      "req_id": 95,
+      "query": "How is damaged or defective hardware replaced?",
+      "status_code": 200,
+      "elapsed_ms": 2615.95,
+      "cached": true,
+      "execution_time_ms": 891.68,
+      "error": null
+    },
+    {
+      "req_id": 99,
+      "query": "What service credit is issued if monthly uptime falls below 95%?",
+      "status_code": 200,
+      "elapsed_ms": 2609.11,
+      "cached": true,
+      "execution_time_ms": 892.33,
+      "error": null
+    },
+    {
+      "req_id": 103,
+      "query": "What is the Time-to-Live for dynamic database credentials generated by HashiCorp Vault?",
+      "status_code": 200,
+      "elapsed_ms": 2606.68,
+      "cached": true,
+      "execution_time_ms": 892.37,
+      "error": null
+    },
+    {
+      "req_id": 102,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 2611.82,
+      "cached": true,
+      "execution_time_ms": 892.18,
+      "error": null
+    },
+    {
+      "req_id": 97,
+      "query": "What service credit is issued if monthly uptime falls below 95%?",
+      "status_code": 200,
+      "elapsed_ms": 2616.3,
+      "cached": true,
+      "execution_time_ms": 891.8,
+      "error": null
+    },
+    {
+      "req_id": 96,
+      "query": "How long are security audit logs retained before permanent deletion?",
+      "status_code": 200,
+      "elapsed_ms": 2621.61,
+      "cached": true,
+      "execution_time_ms": 892.28,
+      "error": null
+    },
+    {
+      "req_id": 98,
+      "query": "What is the Time-to-Live for dynamic database credentials generated by HashiCorp Vault?",
+      "status_code": 200,
+      "elapsed_ms": 2616.42,
+      "cached": true,
+      "execution_time_ms": 891.93,
+      "error": null
+    },
+    {
+      "req_id": 100,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 2615.36,
+      "cached": true,
+      "execution_time_ms": 892.04,
+      "error": null
+    },
+    {
+      "req_id": 101,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 2615.11,
+      "cached": true,
+      "execution_time_ms": 891.98,
+      "error": null
+    },
+    {
+      "req_id": 104,
+      "query": "What is your policy on cryptocurrency payments?",
+      "status_code": 200,
+      "elapsed_ms": 2619.12,
+      "cached": true,
+      "execution_time_ms": 891.98,
+      "error": null
+    },
+    {
+      "req_id": 17,
+      "query": "What is your policy on cryptocurrency payments?",
+      "status_code": 200,
+      "elapsed_ms": 29014.11,
+      "cached": false,
+      "execution_time_ms": 27432.72,
+      "error": null
+    },
+    {
+      "req_id": 8,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 29776.12,
+      "cached": false,
+      "execution_time_ms": 20604.83,
+      "error": null
+    },
+    {
+      "req_id": 105,
+      "query": "How is damaged or defective hardware replaced?",
+      "status_code": 200,
+      "elapsed_ms": 2285.15,
+      "cached": true,
+      "execution_time_ms": 2272.9,
+      "error": null
+    },
+    {
+      "req_id": 108,
+      "query": "Can I get my money back if I cancel my subscription early?",
+      "status_code": 200,
+      "elapsed_ms": 2279.93,
+      "cached": true,
+      "execution_time_ms": 776.79,
+      "error": null
+    },
+    {
+      "req_id": 106,
+      "query": "What is your policy on cryptocurrency payments?",
+      "status_code": 200,
+      "elapsed_ms": 2284.28,
+      "cached": true,
+      "execution_time_ms": 776.81,
+      "error": null
+    },
+    {
+      "req_id": 107,
+      "query": "How is damaged or defective hardware replaced?",
+      "status_code": 200,
+      "elapsed_ms": 2283.31,
+      "cached": true,
+      "execution_time_ms": 776.87,
+      "error": null
+    },
+    {
+      "req_id": 114,
+      "query": "What is the per diem meal limit for domestic and international business travel?",
+      "status_code": 200,
+      "elapsed_ms": 2276.25,
+      "cached": true,
+      "execution_time_ms": 777.25,
+      "error": null
+    },
+    {
+      "req_id": 116,
+      "query": "What service credit is issued if monthly uptime falls below 95%?",
+      "status_code": 200,
+      "elapsed_ms": 2275.19,
+      "cached": true,
+      "execution_time_ms": 777.51,
+      "error": null
+    },
+    {
+      "req_id": 119,
+      "query": "What is your policy on cryptocurrency payments?",
+      "status_code": 200,
+      "elapsed_ms": 2273.56,
+      "cached": true,
+      "execution_time_ms": 777.41,
+      "error": null
+    },
+    {
+      "req_id": 111,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 2280.98,
+      "cached": true,
+      "execution_time_ms": 777.17,
+      "error": null
+    },
+    {
+      "req_id": 109,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 2288.43,
+      "cached": true,
+      "execution_time_ms": 776.86,
+      "error": null
+    },
+    {
+      "req_id": 118,
+      "query": "How is damaged or defective hardware replaced?",
+      "status_code": 200,
+      "elapsed_ms": 2282.0,
+      "cached": true,
+      "execution_time_ms": 777.39,
+      "error": null
+    },
+    {
+      "req_id": 115,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 2284.67,
+      "cached": true,
+      "execution_time_ms": 776.93,
+      "error": null
+    },
+    {
+      "req_id": 120,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 2281.78,
+      "cached": true,
+      "execution_time_ms": 777.19,
+      "error": null
+    },
+    {
+      "req_id": 110,
+      "query": "What service credit is issued if monthly uptime falls below 95%?",
+      "status_code": 200,
+      "elapsed_ms": 2290.09,
+      "cached": true,
+      "execution_time_ms": 777.55,
+      "error": null
+    },
+    {
+      "req_id": 112,
+      "query": "How long are security audit logs retained before permanent deletion?",
+      "status_code": 200,
+      "elapsed_ms": 2293.56,
+      "cached": true,
+      "execution_time_ms": 777.05,
+      "error": null
+    },
+    {
+      "req_id": 117,
+      "query": "What service credit is issued if monthly uptime falls below 95%?",
+      "status_code": 200,
+      "elapsed_ms": 2288.35,
+      "cached": true,
+      "execution_time_ms": 777.46,
+      "error": null
+    },
+    {
+      "req_id": 121,
+      "query": "How is damaged or defective hardware replaced?",
+      "status_code": 200,
+      "elapsed_ms": 2286.09,
+      "cached": true,
+      "execution_time_ms": 777.28,
+      "error": null
+    },
+    {
+      "req_id": 113,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 2294.24,
+      "cached": true,
+      "execution_time_ms": 777.55,
+      "error": null
+    },
+    {
+      "req_id": 9,
+      "query": "What is your policy on cryptocurrency payments?",
+      "status_code": 200,
+      "elapsed_ms": 29797.02,
+      "cached": false,
+      "execution_time_ms": 23041.03,
+      "error": null
+    },
+    {
+      "req_id": 122,
+      "query": "How is damaged or defective hardware replaced?",
+      "status_code": 200,
+      "elapsed_ms": 798.51,
+      "cached": true,
+      "execution_time_ms": 5.7,
+      "error": null
+    },
+    {
+      "req_id": 129,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 790.37,
+      "cached": true,
+      "execution_time_ms": 6.17,
+      "error": null
+    },
+    {
+      "req_id": 131,
+      "query": "What is the Time-to-Live for dynamic database credentials generated by HashiCorp Vault?",
+      "status_code": 200,
+      "elapsed_ms": 788.0,
+      "cached": true,
+      "execution_time_ms": 6.23,
+      "error": null
+    },
+    {
+      "req_id": 125,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 794.0,
+      "cached": true,
+      "execution_time_ms": 5.73,
+      "error": null
+    },
+    {
+      "req_id": 123,
+      "query": "What is your policy on cryptocurrency payments?",
+      "status_code": 200,
+      "elapsed_ms": 799.17,
+      "cached": true,
+      "execution_time_ms": 5.88,
+      "error": null
+    },
+    {
+      "req_id": 124,
+      "query": "How long are security audit logs retained before permanent deletion?",
+      "status_code": 200,
+      "elapsed_ms": 799.08,
+      "cached": true,
+      "execution_time_ms": 6.05,
+      "error": null
+    },
+    {
+      "req_id": 128,
+      "query": "What is the per diem meal limit for domestic and international business travel?",
+      "status_code": 200,
+      "elapsed_ms": 792.86,
+      "cached": true,
+      "execution_time_ms": 5.91,
+      "error": null
+    },
+    {
+      "req_id": 132,
+      "query": "Can I get my money back if I cancel my subscription early?",
+      "status_code": 200,
+      "elapsed_ms": 787.64,
+      "cached": true,
+      "execution_time_ms": 5.76,
+      "error": null
+    },
+    {
+      "req_id": 130,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 792.23,
+      "cached": true,
+      "execution_time_ms": 6.11,
+      "error": null
+    },
+    {
+      "req_id": 127,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 794.85,
+      "cached": true,
+      "execution_time_ms": 5.84,
+      "error": null
+    },
+    {
+      "req_id": 126,
+      "query": "What is the Time-to-Live for dynamic database credentials generated by HashiCorp Vault?",
+      "status_code": 200,
+      "elapsed_ms": 796.05,
+      "cached": true,
+      "execution_time_ms": 5.86,
+      "error": null
+    },
+    {
+      "req_id": 133,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 29.12,
+      "cached": true,
+      "execution_time_ms": 2.86,
+      "error": null
+    },
+    {
+      "req_id": 134,
+      "query": "What is the Time-to-Live for dynamic database credentials generated by HashiCorp Vault?",
+      "status_code": 200,
+      "elapsed_ms": 35.72,
+      "cached": true,
+      "execution_time_ms": 0.15,
+      "error": null
+    },
+    {
+      "req_id": 135,
+      "query": "How is damaged or defective hardware replaced?",
+      "status_code": 200,
+      "elapsed_ms": 33.53,
+      "cached": true,
+      "execution_time_ms": 0.17,
+      "error": null
+    },
+    {
+      "req_id": 147,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 26.08,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 164,
+      "query": "What is your policy on cryptocurrency payments?",
+      "status_code": 200,
+      "elapsed_ms": 13.95,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 140,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 43.74,
+      "cached": true,
+      "execution_time_ms": 0.13,
+      "error": null
+    },
+    {
+      "req_id": 141,
+      "query": "What service credit is issued if monthly uptime falls below 95%?",
+      "status_code": 200,
+      "elapsed_ms": 46.09,
+      "cached": true,
+      "execution_time_ms": 0.14,
+      "error": null
+    },
+    {
+      "req_id": 136,
+      "query": "What service credit is issued if monthly uptime falls below 95%?",
+      "status_code": 200,
+      "elapsed_ms": 52.96,
+      "cached": true,
+      "execution_time_ms": 0.13,
+      "error": null
+    },
+    {
+      "req_id": 153,
+      "query": "What is the per diem meal limit for domestic and international business travel?",
+      "status_code": 200,
+      "elapsed_ms": 36.14,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 166,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 18.31,
+      "cached": true,
+      "execution_time_ms": 0.13,
+      "error": null
+    },
+    {
+      "req_id": 145,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 53.12,
+      "cached": true,
+      "execution_time_ms": 0.11,
+      "error": null
+    },
+    {
+      "req_id": 148,
+      "query": "What service credit is issued if monthly uptime falls below 95%?",
+      "status_code": 200,
+      "elapsed_ms": 53.7,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 156,
+      "query": "How long are security audit logs retained before permanent deletion?",
+      "status_code": 200,
+      "elapsed_ms": 46.72,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 143,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 64.57,
+      "cached": true,
+      "execution_time_ms": 0.13,
+      "error": null
+    },
+    {
+      "req_id": 170,
+      "query": "What service credit is issued if monthly uptime falls below 95%?",
+      "status_code": 200,
+      "elapsed_ms": 20.73,
+      "cached": true,
+      "execution_time_ms": 0.11,
+      "error": null
+    },
+    {
+      "req_id": 150,
+      "query": "What service credit is issued if monthly uptime falls below 95%?",
+      "status_code": 200,
+      "elapsed_ms": 66.68,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 160,
+      "query": "What is the Time-to-Live for dynamic database credentials generated by HashiCorp Vault?",
+      "status_code": 200,
+      "elapsed_ms": 57.41,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 171,
+      "query": "What service credit is issued if monthly uptime falls below 95%?",
+      "status_code": 200,
+      "elapsed_ms": 23.03,
+      "cached": true,
+      "execution_time_ms": 0.11,
+      "error": null
+    },
+    {
+      "req_id": 158,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 62.56,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 142,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 78.9,
+      "cached": true,
+      "execution_time_ms": 0.13,
+      "error": null
+    },
+    {
+      "req_id": 151,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 74.58,
+      "cached": true,
+      "execution_time_ms": 0.11,
+      "error": null
+    },
+    {
+      "req_id": 144,
+      "query": "What is the Time-to-Live for dynamic database credentials generated by HashiCorp Vault?",
+      "status_code": 200,
+      "elapsed_ms": 86.8,
+      "cached": true,
+      "execution_time_ms": 0.11,
+      "error": null
+    },
+    {
+      "req_id": 138,
+      "query": "What is the per diem meal limit for domestic and international business travel?",
+      "status_code": 200,
+      "elapsed_ms": 98.54,
+      "cached": true,
+      "execution_time_ms": 0.11,
+      "error": null
+    },
+    {
+      "req_id": 162,
+      "query": "What is the per diem meal limit for domestic and international business travel?",
+      "status_code": 200,
+      "elapsed_ms": 75.99,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 139,
+      "query": "What is the Time-to-Live for dynamic database credentials generated by HashiCorp Vault?",
+      "status_code": 200,
+      "elapsed_ms": 100.09,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 155,
+      "query": "Can I get my money back if I cancel my subscription early?",
+      "status_code": 200,
+      "elapsed_ms": 87.07,
+      "cached": true,
+      "execution_time_ms": 0.13,
+      "error": null
+    },
+    {
+      "req_id": 137,
+      "query": "How long are security audit logs retained before permanent deletion?",
+      "status_code": 200,
+      "elapsed_ms": 110.5,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 159,
+      "query": "Can I get my money back if I cancel my subscription early?",
+      "status_code": 200,
+      "elapsed_ms": 90.56,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 165,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 83.79,
+      "cached": true,
+      "execution_time_ms": 0.13,
+      "error": null
+    },
+    {
+      "req_id": 184,
+      "query": "Can I get my money back if I cancel my subscription early?",
+      "status_code": 200,
+      "elapsed_ms": 22.39,
+      "cached": true,
+      "execution_time_ms": 0.11,
+      "error": null
+    },
+    {
+      "req_id": 182,
+      "query": "What is the Time-to-Live for dynamic database credentials generated by HashiCorp Vault?",
+      "status_code": 200,
+      "elapsed_ms": 32.84,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 178,
+      "query": "How is damaged or defective hardware replaced?",
+      "status_code": 200,
+      "elapsed_ms": 44.29,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 188,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 19.68,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 175,
+      "query": "What is the Time-to-Live for dynamic database credentials generated by HashiCorp Vault?",
+      "status_code": 200,
+      "elapsed_ms": 64.36,
+      "cached": true,
+      "execution_time_ms": 0.11,
+      "error": null
+    },
+    {
+      "req_id": 185,
+      "query": "How long are security audit logs retained before permanent deletion?",
+      "status_code": 200,
+      "elapsed_ms": 35.5,
+      "cached": true,
+      "execution_time_ms": 0.13,
+      "error": null
+    },
+    {
+      "req_id": 167,
+      "query": "How long are security audit logs retained before permanent deletion?",
+      "status_code": 200,
+      "elapsed_ms": 100.07,
+      "cached": true,
+      "execution_time_ms": 0.15,
+      "error": null
+    },
+    {
+      "req_id": 146,
+      "query": "What is your policy on cryptocurrency payments?",
+      "status_code": 200,
+      "elapsed_ms": 135.22,
+      "cached": true,
+      "execution_time_ms": 0.14,
+      "error": null
+    },
+    {
+      "req_id": 193,
+      "query": "What is the per diem meal limit for domestic and international business travel?",
+      "status_code": 200,
+      "elapsed_ms": 23.34,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 177,
+      "query": "What is your policy on cryptocurrency payments?",
+      "status_code": 200,
+      "elapsed_ms": 73.01,
+      "cached": true,
+      "execution_time_ms": 0.11,
+      "error": null
+    },
+    {
+      "req_id": 194,
+      "query": "What is your policy on cryptocurrency payments?",
+      "status_code": 200,
+      "elapsed_ms": 21.77,
+      "cached": true,
+      "execution_time_ms": 0.11,
+      "error": null
+    },
+    {
+      "req_id": 149,
+      "query": "Can I get my money back if I cancel my subscription early?",
+      "status_code": 200,
+      "elapsed_ms": 141.61,
+      "cached": true,
+      "execution_time_ms": 0.28,
+      "error": null
+    },
+    {
+      "req_id": 152,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 137.74,
+      "cached": true,
+      "execution_time_ms": 0.13,
+      "error": null
+    },
+    {
+      "req_id": 191,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 40.67,
+      "cached": true,
+      "execution_time_ms": 0.18,
+      "error": null
+    },
+    {
+      "req_id": 179,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 78.08,
+      "cached": true,
+      "execution_time_ms": 0.11,
+      "error": null
+    },
+    {
+      "req_id": 169,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 111.61,
+      "cached": true,
+      "execution_time_ms": 0.11,
+      "error": null
+    },
+    {
+      "req_id": 174,
+      "query": "What service credit is issued if monthly uptime falls below 95%?",
+      "status_code": 200,
+      "elapsed_ms": 96.96,
+      "cached": true,
+      "execution_time_ms": 0.19,
+      "error": null
+    },
+    {
+      "req_id": 198,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 21.7,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 197,
+      "query": "What is your policy on cryptocurrency payments?",
+      "status_code": 200,
+      "elapsed_ms": 29.39,
+      "cached": true,
+      "execution_time_ms": 0.13,
+      "error": null
+    },
+    {
+      "req_id": 180,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 88.71,
+      "cached": true,
+      "execution_time_ms": 0.14,
+      "error": null
+    },
+    {
+      "req_id": 189,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 62.44,
+      "cached": true,
+      "execution_time_ms": 0.13,
+      "error": null
+    },
+    {
+      "req_id": 168,
+      "query": "What consensus mechanism and failover time are used for PostgreSQL high availability?",
+      "status_code": 200,
+      "elapsed_ms": 129.56,
+      "cached": true,
+      "execution_time_ms": 0.14,
+      "error": null
+    },
+    {
+      "req_id": 192,
+      "query": "Can I get my money back if I cancel my subscription early?",
+      "status_code": 200,
+      "elapsed_ms": 57.48,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 176,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 106.38,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 163,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 155.48,
+      "cached": true,
+      "execution_time_ms": 0.14,
+      "error": null
+    },
+    {
+      "req_id": 195,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 50.58,
+      "cached": true,
+      "execution_time_ms": 0.14,
+      "error": null
+    },
+    {
+      "req_id": 154,
+      "query": "What is your policy on cryptocurrency payments?",
+      "status_code": 200,
+      "elapsed_ms": 164.52,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 190,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 73.1,
+      "cached": true,
+      "execution_time_ms": 0.13,
+      "error": null
+    },
+    {
+      "req_id": 181,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 102.45,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 199,
+      "query": "What is the per diem meal limit for domestic and international business travel?",
+      "status_code": 200,
+      "elapsed_ms": 44.42,
+      "cached": true,
+      "execution_time_ms": 0.17,
+      "error": null
+    },
+    {
+      "req_id": 196,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 54.57,
+      "cached": true,
+      "execution_time_ms": 0.11,
+      "error": null
+    },
+    {
+      "req_id": 161,
+      "query": "What error rate threshold triggers an automated rollback during canary deployments?",
+      "status_code": 200,
+      "elapsed_ms": 169.19,
+      "cached": true,
+      "execution_time_ms": 0.35,
+      "error": null
+    },
+    {
+      "req_id": 172,
+      "query": "How long are security audit logs retained before permanent deletion?",
+      "status_code": 200,
+      "elapsed_ms": 135.07,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 187,
+      "query": "How long are security audit logs retained before permanent deletion?",
+      "status_code": 200,
+      "elapsed_ms": 92.47,
+      "cached": true,
+      "execution_time_ms": 0.21,
+      "error": null
+    },
+    {
+      "req_id": 186,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 93.76,
+      "cached": true,
+      "execution_time_ms": 0.17,
+      "error": null
+    },
+    {
+      "req_id": 157,
+      "query": "What is the per diem meal limit for domestic and international business travel?",
+      "status_code": 200,
+      "elapsed_ms": 176.33,
+      "cached": true,
+      "execution_time_ms": 0.12,
+      "error": null
+    },
+    {
+      "req_id": 173,
+      "query": "How many weeks of paid leave are employees entitled to for family or sabbatical?",
+      "status_code": 200,
+      "elapsed_ms": 135.55,
+      "cached": true,
+      "execution_time_ms": 0.13,
+      "error": null
+    },
+    {
+      "req_id": 183,
+      "query": "How is damaged or defective hardware replaced?",
+      "status_code": 200,
+      "elapsed_ms": 109.42,
+      "cached": true,
+      "execution_time_ms": 0.13,
+      "error": null
+    }
+  ]
+}

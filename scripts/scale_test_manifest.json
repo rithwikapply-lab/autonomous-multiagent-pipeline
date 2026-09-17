@@ -1,0 +1,908 @@
+{
+  "total_documents": 100,
+  "successful": 100,
+  "total_chunks": 100,
+  "total_time_seconds": 0.6,
+  "documents": [
+    {
+      "number": 1,
+      "title": "Corporate Travel and Expense Reimbursement Policy 2026",
+      "category": "HR & Workplace Policies",
+      "doc_id": "c8038fff-4228-4e90-85d4-d7b2db600773",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 53.7
+    },
+    {
+      "number": 2,
+      "title": "Parental Leave and Primary Caregiver Benefit Guidelines",
+      "category": "HR & Workplace Policies",
+      "doc_id": "c758f5db-0eb3-46ce-900d-a8dd446e5c7e",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 7.7
+    },
+    {
+      "number": 3,
+      "title": "Bring Your Own Device (BYOD) and Mobile Device Management Security",
+      "category": "HR & Workplace Policies",
+      "doc_id": "78029959-1a9f-4c95-b5a8-c55ed00ec396",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.9
+    },
+    {
+      "number": 4,
+      "title": "Hardware Asset Decommissioning and Employee Offboarding Protocol",
+      "category": "HR & Workplace Policies",
+      "doc_id": "caf6dff6-8da7-464a-932e-17d11fb8c3d1",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.7
+    },
+    {
+      "number": 5,
+      "title": "Annual Performance Review, Calibration, and Merit Compensation Framework",
+      "category": "HR & Workplace Policies",
+      "doc_id": "5959f335-6117-455e-a6a9-a87ed0ec9822",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.4
+    },
+    {
+      "number": 6,
+      "title": "Remote Workspace Ergonomic Stipend and Home Office Policy",
+      "category": "HR & Workplace Policies",
+      "doc_id": "cb28da0d-c540-4760-9b8f-366c1d543726",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.3
+    },
+    {
+      "number": 7,
+      "title": "Corporate Social Media Guidelines and External Communication Standards",
+      "category": "HR & Workplace Policies",
+      "doc_id": "035c5e64-775c-46b9-9553-5baae4cf2612",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.0
+    },
+    {
+      "number": 8,
+      "title": "Whistleblower Protection, Ethics Hotline, and Non-Retaliation Policy",
+      "category": "HR & Workplace Policies",
+      "doc_id": "20122405-0f2d-4dc7-82a2-f353d7b6014a",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.1
+    },
+    {
+      "number": 9,
+      "title": "Tuition Assistance, Professional Development, and Continuing Education",
+      "category": "HR & Workplace Policies",
+      "doc_id": "6f567760-81b8-4812-933d-feaa4cb5faf8",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.8
+    },
+    {
+      "number": 10,
+      "title": "Employee Sabbatical Program and Extended Rest Leave Protocol",
+      "category": "HR & Workplace Policies",
+      "doc_id": "012233f1-8513-4b3f-9f5b-7e8546e9df20",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.6
+    },
+    {
+      "number": 11,
+      "title": "Enterprise Cloud Infrastructure Service Level Agreement (SLA)",
+      "category": "Enterprise SLAs & Support Commitments",
+      "doc_id": "4aac8956-5cb8-4dfe-8792-f70e5bf1b985",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 9.4
+    },
+    {
+      "number": 12,
+      "title": "Incident Severity Classification, Escalation Paths, and Response Times",
+      "category": "Enterprise SLAs & Support Commitments",
+      "doc_id": "7841b87f-b460-4591-8b83-3a4b36514c8e",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 14.1
+    },
+    {
+      "number": 13,
+      "title": "Enterprise Customer Support Matrix and Dedicated Account Management",
+      "category": "Enterprise SLAs & Support Commitments",
+      "doc_id": "595db6a7-cb1b-4f66-af9c-b9a7a720d286",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 7.3
+    },
+    {
+      "number": 14,
+      "title": "Disaster Recovery, High Availability, and RPO/RTO Commitments",
+      "category": "Enterprise SLAs & Support Commitments",
+      "doc_id": "f3394e2f-8e25-49e0-9ffa-a2bc5051973f",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 7.9
+    },
+    {
+      "number": 15,
+      "title": "Hardware Appliance Replacement and On-Site Maintenance SLA",
+      "category": "Enterprise SLAs & Support Commitments",
+      "doc_id": "69411b2a-58ee-4890-8df7-7932b6c75476",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.4
+    },
+    {
+      "number": 16,
+      "title": "Scheduled Maintenance Windows and Platform Change Management",
+      "category": "Enterprise SLAs & Support Commitments",
+      "doc_id": "e0671d85-8634-42c4-9e32-9a6bea4e8bb4",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.5
+    },
+    {
+      "number": 17,
+      "title": "Payment Gateway Processing, Settlement, and Dispute Resolution SLA",
+      "category": "Enterprise SLAs & Support Commitments",
+      "doc_id": "c8df5d86-6208-4e6d-8688-6618f1d1dfb8",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 3.9
+    },
+    {
+      "number": 18,
+      "title": "Third-Party Sub-Processor Due Diligence and Notification Protocol",
+      "category": "Enterprise SLAs & Support Commitments",
+      "doc_id": "d73e2703-5b98-45ed-b76b-07a1329ca1bd",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.3
+    },
+    {
+      "number": 19,
+      "title": "SaaS Single Sign-On (SSO) SLA and Directory Sync Guarantees",
+      "category": "Enterprise SLAs & Support Commitments",
+      "doc_id": "f53355bf-71ad-43a5-9a26-049e4aea4ded",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 3.9
+    },
+    {
+      "number": 20,
+      "title": "Customer Data Export, Portability, and Migration SLA",
+      "category": "Enterprise SLAs & Support Commitments",
+      "doc_id": "221ae377-6360-44c3-b783-24a8d0b9df51",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.9
+    },
+    {
+      "number": 21,
+      "title": "PostgreSQL Streaming Replication, Patroni Failover, and Connection Pooling",
+      "category": "Cloud Infrastructure & Database Architecture",
+      "doc_id": "be7627e5-e3ae-47d5-8c1a-0af2f1dd0208",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.5
+    },
+    {
+      "number": 22,
+      "title": "API Rate Limiting, Token Bucket Throttling, and Abuse Prevention Specs",
+      "category": "Cloud Infrastructure & Database Architecture",
+      "doc_id": "918365aa-c59c-4d13-82ff-8760f0746a0d",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.8
+    },
+    {
+      "number": 23,
+      "title": "Kubernetes Cluster Ingress, Service Mesh, and Mutual TLS Standards",
+      "category": "Cloud Infrastructure & Database Architecture",
+      "doc_id": "5bed8485-e3e8-4a27-8d66-2fbd452bfe49",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.5
+    },
+    {
+      "number": 24,
+      "title": "Apache Kafka Event Streaming, Schema Registry, and Topic Retention",
+      "category": "Cloud Infrastructure & Database Architecture",
+      "doc_id": "385a448c-459f-4eed-bc80-9edb98f24a50",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.4
+    },
+    {
+      "number": 25,
+      "title": "Redis Cluster Architecture, Memory Eviction, and Distributed Locking",
+      "category": "Cloud Infrastructure & Database Architecture",
+      "doc_id": "18a14efd-786f-4abd-b510-bb1fa7e8b6e5",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 8.9
+    },
+    {
+      "number": 26,
+      "title": "Distributed Tracing, Metrics Collection, and OpenTelemetry Standards",
+      "category": "Cloud Infrastructure & Database Architecture",
+      "doc_id": "cc2b339d-d51e-4c1d-a7cc-8f67e60c2bde",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.5
+    },
+    {
+      "number": 27,
+      "title": "Cloud Object Storage Lifecycle, Versioning, and S3 Glacier Archival",
+      "category": "Cloud Infrastructure & Database Architecture",
+      "doc_id": "28c20d26-3e44-47ed-8c5e-880aae2a6579",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.5
+    },
+    {
+      "number": 28,
+      "title": "Database Schema Migrations and Zero-Downtime Expand-and-Contract Architecture",
+      "category": "Cloud Infrastructure & Database Architecture",
+      "doc_id": "cb93f6e5-2402-41b1-8802-db7cad38d2ab",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.5
+    },
+    {
+      "number": 29,
+      "title": "GraphQL Federation Gateway and Subgraph Schema Governance",
+      "category": "Cloud Infrastructure & Database Architecture",
+      "doc_id": "a9c92593-ea76-41e0-acf6-9c6d133c6ce8",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.1
+    },
+    {
+      "number": 30,
+      "title": "Multi-Region Cloud Failover and Global Traffic Management Architecture",
+      "category": "Cloud Infrastructure & Database Architecture",
+      "doc_id": "7ad71122-b86a-4ddf-8084-4bcc9ac8ce53",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.6
+    },
+    {
+      "number": 31,
+      "title": "Secrets Management, HashiCorp Vault, and Dynamic Credential Rotation",
+      "category": "Security, Cryptography & Zero-Trust",
+      "doc_id": "ab79920b-7597-42b8-8871-f33896a04ce9",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.8
+    },
+    {
+      "number": 32,
+      "title": "Zero-Trust Network Access (ZTNA) and Microsegmentation Architecture",
+      "category": "Security, Cryptography & Zero-Trust",
+      "doc_id": "535304c5-2c64-4ad3-8671-a32eb5ffc386",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.1
+    },
+    {
+      "number": 33,
+      "title": "Cryptographic Standards, Approved Cipher Suites, and TLS 1.3 Mandate",
+      "category": "Security, Cryptography & Zero-Trust",
+      "doc_id": "1a80a653-c208-4669-964a-c18d0aef87a2",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.5
+    },
+    {
+      "number": 34,
+      "title": "Container Vulnerability Scanning, Base Image Hardening, and SBOM Protocols",
+      "category": "Security, Cryptography & Zero-Trust",
+      "doc_id": "16563017-98a9-438d-9f7f-e2c72b586740",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.5
+    },
+    {
+      "number": 35,
+      "title": "Public Bug Bounty Program, Vulnerability Disclosure, and Safe Harbor",
+      "category": "Security, Cryptography & Zero-Trust",
+      "doc_id": "ae7a4403-d1ca-45b3-8f73-992260cab8cb",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.6
+    },
+    {
+      "number": 36,
+      "title": "Data Loss Prevention (DLP), PII Redaction, and Sensitive Pattern Scrubbing",
+      "category": "Security, Cryptography & Zero-Trust",
+      "doc_id": "de8abbaa-4e49-46f6-a735-71f2bcb977a1",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.4
+    },
+    {
+      "number": 37,
+      "title": "Role-Based Access Control (RBAC), Privilege Escalation, and Least Privilege",
+      "category": "Security, Cryptography & Zero-Trust",
+      "doc_id": "d1e9c5db-de8d-491c-9de0-a34b7ae28b13",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.5
+    },
+    {
+      "number": 38,
+      "title": "Single Sign-On (SAML 2.0 / Okta / Azure AD) Integration Guide",
+      "category": "Security, Cryptography & Zero-Trust",
+      "doc_id": "c90dd690-640d-4b39-9699-1d6a3b6f81b9",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.8
+    },
+    {
+      "number": 39,
+      "title": "Audit Logging, SIEM Event Forwarding, and Immutable Storage Protocols",
+      "category": "Security, Cryptography & Zero-Trust",
+      "doc_id": "42eef2aa-20c6-47fb-9dce-ebe913f14847",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.3
+    },
+    {
+      "number": 40,
+      "title": "Penetration Testing, Third-Party Audits, and Vulnerability Remediation SLAs",
+      "category": "Security, Cryptography & Zero-Trust",
+      "doc_id": "85006dc3-a99a-450b-bbc0-92895b2f64f2",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.8
+    },
+    {
+      "number": 41,
+      "title": "Billing Cycles, Seat Proration, and Automated Invoicing Rules",
+      "category": "Billing, Finance & Commercial Terms",
+      "doc_id": "4148f83e-1718-463f-baca-595f78eaef6d",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 8.3
+    },
+    {
+      "number": 42,
+      "title": "Multi-Currency Invoicing, FX Conversion, and Regional Tax Rules",
+      "category": "Billing, Finance & Commercial Terms",
+      "doc_id": "9a5cbf4e-2dd9-4a50-a6f0-eeea23653feb",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.9
+    },
+    {
+      "number": 43,
+      "title": "Subscription Cancellation, Grace Periods, and Refund Eligibility",
+      "category": "Billing, Finance & Commercial Terms",
+      "doc_id": "068ff6f0-dc4a-4247-a1f0-7111d5bfbf52",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.2
+    },
+    {
+      "number": 44,
+      "title": "Educational, Non-Profit, and Startup Discount Framework",
+      "category": "Billing, Finance & Commercial Terms",
+      "doc_id": "5d86bd03-ddc9-4e4b-a94c-c45995c25c2e",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.9
+    },
+    {
+      "number": 45,
+      "title": "Credit Card Chargeback, Fraud Prevention, and Dispute Mitigation",
+      "category": "Billing, Finance & Commercial Terms",
+      "doc_id": "b3fa005e-dc8e-4ab1-9830-f09e58c1a18a",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.8
+    },
+    {
+      "number": 46,
+      "title": "Enterprise Purchase Orders, Master Services Agreements, and Custom SOWs",
+      "category": "Billing, Finance & Commercial Terms",
+      "doc_id": "6b85f8f6-57a7-4559-9e67-e11a21a35b72",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.8
+    },
+    {
+      "number": 47,
+      "title": "Usage-Based Metering, API Overage Rates, and Capacity Thresholds",
+      "category": "Billing, Finance & Commercial Terms",
+      "doc_id": "a464beec-3714-4638-a35f-06dc6eeadbff",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.1
+    },
+    {
+      "number": 48,
+      "title": "Enterprise Hardware Lease, Financing, and Depreciation Protocols",
+      "category": "Billing, Finance & Commercial Terms",
+      "doc_id": "f3b7bdb1-b4a7-407e-90e1-30ffd40b8b5f",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.0
+    },
+    {
+      "number": 49,
+      "title": "Customer Referral Program, Affiliate Commissions, and Payout Terms",
+      "category": "Billing, Finance & Commercial Terms",
+      "doc_id": "b2fd1e36-efc7-45f2-8dc6-1b6e407e56e7",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.8
+    },
+    {
+      "number": 50,
+      "title": "Annual Contract Renegotiation, Uplift Caps, and Renewal Terms",
+      "category": "Billing, Finance & Commercial Terms",
+      "doc_id": "cfcf7f6e-0e14-411e-91ad-5790d171acb5",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.9
+    },
+    {
+      "number": 51,
+      "title": "CI/CD Pipeline Architecture, Automated Testing, and Deployment Gates",
+      "category": "DevOps, CI/CD & Reliability Engineering",
+      "doc_id": "2bc7787c-af0c-48ea-8400-7d664d4999a3",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.9
+    },
+    {
+      "number": 52,
+      "title": "Canary Deployments, Progressive Delivery, and Automated Rollbacks",
+      "category": "DevOps, CI/CD & Reliability Engineering",
+      "doc_id": "a5f1c2b8-4567-4ab7-90e4-ae5f396f7454",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.5
+    },
+    {
+      "number": 53,
+      "title": "Async Task Queue Architecture, Celery Workers, and Dead-Letter Queues",
+      "category": "DevOps, CI/CD & Reliability Engineering",
+      "doc_id": "9626e87b-dabf-46b7-956e-20f910f6157d",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.0
+    },
+    {
+      "number": 54,
+      "title": "Edge CDN Caching, Cache-Control Invalidation, and Cloudflare WAF",
+      "category": "DevOps, CI/CD & Reliability Engineering",
+      "doc_id": "96fd8a73-4b2d-4e3c-bf46-b5d96cdf4df1",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.0
+    },
+    {
+      "number": 55,
+      "title": "Serverless Function Execution, Cold Start Mitigation, and Concurrency",
+      "category": "DevOps, CI/CD & Reliability Engineering",
+      "doc_id": "09497c4d-85d8-4190-bc3d-06b8cb87fa2d",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.8
+    },
+    {
+      "number": 56,
+      "title": "Infrastructure as Code (IaC), Terraform Standards, and State Management",
+      "category": "DevOps, CI/CD & Reliability Engineering",
+      "doc_id": "792be032-6e92-4f65-9a5d-a81152e4128f",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.0
+    },
+    {
+      "number": 57,
+      "title": "Synthetic Monitoring, Global Health Probes, and Alerting Thresholds",
+      "category": "DevOps, CI/CD & Reliability Engineering",
+      "doc_id": "14c0cbe0-babc-43f1-bd95-66df69b579e4",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.8
+    },
+    {
+      "number": 58,
+      "title": "Feature Flag Management, Dark Launches, and Circuit Breakers",
+      "category": "DevOps, CI/CD & Reliability Engineering",
+      "doc_id": "22244c08-a2cb-44ec-9dda-5696adf9014b",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.1
+    },
+    {
+      "number": 59,
+      "title": "Chaos Engineering, Fault Injection, and Resilience Testing",
+      "category": "DevOps, CI/CD & Reliability Engineering",
+      "doc_id": "fda320d4-1366-4db9-be2f-465696595a8d",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.6
+    },
+    {
+      "number": 60,
+      "title": "Log Aggregation, Elastic Common Schema, and Structured Telemetry",
+      "category": "DevOps, CI/CD & Reliability Engineering",
+      "doc_id": "de496bdf-27ee-46fb-a22c-8c5f17f2ea8e",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.0
+    },
+    {
+      "number": 61,
+      "title": "GDPR Right to Be Forgotten and Cryptographic Data Erasure Protocol",
+      "category": "Data Governance, Compliance & Privacy",
+      "doc_id": "c8528847-cba1-47a6-bf82-920b6cd249eb",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.6
+    },
+    {
+      "number": 62,
+      "title": "HIPAA Compliance, Protected Health Information (PHI), and BAA Framework",
+      "category": "Data Governance, Compliance & Privacy",
+      "doc_id": "75d8a882-d09d-43c3-990d-3ddb440ea917",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 6.1
+    },
+    {
+      "number": 63,
+      "title": "SOC 2 Type II Examination Standards, Trust Principles, and Report Access",
+      "category": "Data Governance, Compliance & Privacy",
+      "doc_id": "49912cb4-4113-48ea-8d97-d1632c86d8dd",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.3
+    },
+    {
+      "number": 64,
+      "title": "Data Classification Framework, Handling Guidelines, and Labeling Standards",
+      "category": "Data Governance, Compliance & Privacy",
+      "doc_id": "8a039853-2d9e-4319-87de-52e8026939ac",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.0
+    },
+    {
+      "number": 65,
+      "title": "Data Retention Schedules, Automated Archival, and Record Destruction",
+      "category": "Data Governance, Compliance & Privacy",
+      "doc_id": "ad27cce6-83ca-4717-8f6c-2e397240cebc",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.3
+    },
+    {
+      "number": 66,
+      "title": "Cross-Border Data Transfer, Standard Contractual Clauses, and Data Residency",
+      "category": "Data Governance, Compliance & Privacy",
+      "doc_id": "658caca4-86c2-47c8-8216-c68c90f16add",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.3
+    },
+    {
+      "number": 67,
+      "title": "Security Incident Response Plan (SIRP) and Regulatory Breach Notification",
+      "category": "Data Governance, Compliance & Privacy",
+      "doc_id": "9f71ba0a-54ff-43c0-b246-71074a5bc735",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.5
+    },
+    {
+      "number": 68,
+      "title": "Software Escrow Commitments and Business Continuity Undertakings",
+      "category": "Data Governance, Compliance & Privacy",
+      "doc_id": "2ce06ef1-3a53-4b77-a9de-104f9c8789c2",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 4.9
+    },
+    {
+      "number": 69,
+      "title": "Employee Security Training, Phishing Simulations, and Awareness Protocols",
+      "category": "Data Governance, Compliance & Privacy",
+      "doc_id": "aabc5f21-713c-424c-9bca-809a3c1577f9",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 11.3
+    },
+    {
+      "number": 70,
+      "title": "Internal Whistleblower Hotline, Anti-Retaliation, and Audit Committee Governance",
+      "category": "Data Governance, Compliance & Privacy",
+      "doc_id": "2d697c91-3569-409a-99ac-3239d1dff99c",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.2
+    },
+    {
+      "number": 71,
+      "title": "Corporate Hardware Standards, Laptop Refreshes, and Specification Bands",
+      "category": "Hardware, Logistics & Office Operations",
+      "doc_id": "9d9c6f44-fe15-4d9a-9c1e-18911552a74f",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.2
+    },
+    {
+      "number": 72,
+      "title": "Physical Security, Data Center Access Controls, and Biometric Mantraps",
+      "category": "Hardware, Logistics & Office Operations",
+      "doc_id": "fd40fd18-e38c-4bb9-bcb8-9dd8e4114917",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 6.7
+    },
+    {
+      "number": 73,
+      "title": "International Shipping, Tariffs, Customs Clearances, and DDP Delivery",
+      "category": "Hardware, Logistics & Office Operations",
+      "doc_id": "dccca891-b456-41f0-99b4-5a55577afcd9",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.4
+    },
+    {
+      "number": 74,
+      "title": "Office Ergonomic Standards, Workstation Assessments, and Safety Protocols",
+      "category": "Hardware, Logistics & Office Operations",
+      "doc_id": "da63e9db-8f50-486d-9854-f5f8f991d0ef",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.8
+    },
+    {
+      "number": 75,
+      "title": "Mobile Test Device Management, Lab Inventory, and Checkout Procedures",
+      "category": "Hardware, Logistics & Office Operations",
+      "doc_id": "c44cd856-a256-4d61-85b6-61b45a7043a5",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.2
+    },
+    {
+      "number": 76,
+      "title": "Visitor Management, Physical Badging, and Escort Procedures",
+      "category": "Hardware, Logistics & Office Operations",
+      "doc_id": "9d7d9adc-cf9f-495b-a6a2-a1721d37fa63",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.2
+    },
+    {
+      "number": 77,
+      "title": "Clean Desk Policy, Secure Printing, and Physical Document Destruction",
+      "category": "Hardware, Logistics & Office Operations",
+      "doc_id": "6676b2ea-9ee3-4605-b58b-f5630fb8aa75",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.4
+    },
+    {
+      "number": 78,
+      "title": "Emergency Action Plan, Facility Evacuation, and First Aid Protocols",
+      "category": "Hardware, Logistics & Office Operations",
+      "doc_id": "95f6da7f-0090-4eb2-9a98-889ef8320bb8",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.7
+    },
+    {
+      "number": 79,
+      "title": "Corporate Vehicle Usage, Commuter Benefits, and Fleet Safety Guidelines",
+      "category": "Hardware, Logistics & Office Operations",
+      "doc_id": "b54d710c-3689-43b1-82b1-22a432675689",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.1
+    },
+    {
+      "number": 80,
+      "title": "Sustainable Procurement, Electronic Waste (E-Waste), and Recycling Policy",
+      "category": "Hardware, Logistics & Office Operations",
+      "doc_id": "2149926c-0ac8-4a2e-8996-be96789dd001",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.5
+    },
+    {
+      "number": 81,
+      "title": "API Versioning, Semantic Deprecation, and Sunset Header RFC 8594",
+      "category": "API, Developer Platform & Integrations",
+      "doc_id": "df2ed598-e42a-4fcc-9005-2421697dd60f",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.2
+    },
+    {
+      "number": 82,
+      "title": "Webhook Delivery Architecture, HMAC-SHA256 Signatures, and Retry Policies",
+      "category": "API, Developer Platform & Integrations",
+      "doc_id": "ad725822-f38a-446f-a244-8e4d3738eda9",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 6.1
+    },
+    {
+      "number": 83,
+      "title": "API Key Generation, Scopes, and Instant Zero-Latency Revocation",
+      "category": "API, Developer Platform & Integrations",
+      "doc_id": "55585569-3d06-4524-87ba-bad0a0d2acd3",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.7
+    },
+    {
+      "number": 84,
+      "title": "SDK Architecture, Multi-Language Code Generation, and Semantic Versioning",
+      "category": "API, Developer Platform & Integrations",
+      "doc_id": "53b25c5d-3e67-408a-8b11-37f0f53ef121",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 7.5
+    },
+    {
+      "number": 85,
+      "title": "Interactive API Documentation, OpenAPI 3.1 Standards, and Swagger UI",
+      "category": "API, Developer Platform & Integrations",
+      "doc_id": "b32eb5c4-8ca1-496a-b9e4-8f012ae164fb",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.8
+    },
+    {
+      "number": 86,
+      "title": "Sandbox Environment, Synthetic Mock Data, and Production Parity",
+      "category": "API, Developer Platform & Integrations",
+      "doc_id": "22f8e693-a5e6-4609-a807-0f01ac79ff11",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.8
+    },
+    {
+      "number": 87,
+      "title": "GraphQL Subscriptions, Real-Time State Sync, and WebSocket Protocol",
+      "category": "API, Developer Platform & Integrations",
+      "doc_id": "9331ad3c-9851-420b-abad-6f3581182171",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.9
+    },
+    {
+      "number": 88,
+      "title": "Partner Marketplace App Certification, OAuth 2.0, and Security Standards",
+      "category": "API, Developer Platform & Integrations",
+      "doc_id": "cd937d4f-35c9-494d-8b95-b67d19c176d2",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.6
+    },
+    {
+      "number": 89,
+      "title": "Batch Processing APIs, Bulk Document Ingestion, and Concurrency Limits",
+      "category": "API, Developer Platform & Integrations",
+      "doc_id": "6fd33622-7080-4fd5-8790-61a192f97949",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.9
+    },
+    {
+      "number": 90,
+      "title": "API Telemetry, OpenTelemetry Instrumentation, and Tracing Headers",
+      "category": "API, Developer Platform & Integrations",
+      "doc_id": "be4041c9-ca20-4fde-bc05-098646677ad2",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.4
+    },
+    {
+      "number": 91,
+      "title": "Customer Success Onboarding Framework, Milestones, and Time-to-Value",
+      "category": "Product Operations, Telemetry & Customer Success",
+      "doc_id": "a7937081-0930-4e6c-b41e-e31699593e90",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.9
+    },
+    {
+      "number": 92,
+      "title": "Quarterly Business Reviews (QBR), Success Metrics, and Health Scoring",
+      "category": "Product Operations, Telemetry & Customer Success",
+      "doc_id": "918b03c9-a2e6-41ad-a579-5a606f1fd116",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 7.4
+    },
+    {
+      "number": 93,
+      "title": "Product Telemetry, Usage Analytics, and Opt-Out Privacy Standards",
+      "category": "Product Operations, Telemetry & Customer Success",
+      "doc_id": "55022d4f-bf46-42b5-ac34-eeb7a4399a3b",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.8
+    },
+    {
+      "number": 94,
+      "title": "Customer Advisory Board (CAB) Governance, Charter, and Membership",
+      "category": "Product Operations, Telemetry & Customer Success",
+      "doc_id": "45f1ba67-4e13-4818-9987-ada87d3a955e",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.8
+    },
+    {
+      "number": 95,
+      "title": "Net Promoter Score (NPS), CSAT Surveys, and Feedback Loop Architecture",
+      "category": "Product Operations, Telemetry & Customer Success",
+      "doc_id": "1ae9b67f-2a36-4913-b988-2ff720548240",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.8
+    },
+    {
+      "number": 96,
+      "title": "Beta Program Governance, Feature Flags, and Early Access Agreements",
+      "category": "Product Operations, Telemetry & Customer Success",
+      "doc_id": "d2e9219c-9aef-4236-8751-635c4c34aeb0",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.8
+    },
+    {
+      "number": 97,
+      "title": "Community Forum Moderation, Code of Conduct, and Acceptable Use Policy",
+      "category": "Product Operations, Telemetry & Customer Success",
+      "doc_id": "ac2cebea-00b8-4590-83ba-f269e244406c",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.8
+    },
+    {
+      "number": 98,
+      "title": "Customer Training Programs, Certifications, and Academy Curriculum",
+      "category": "Product Operations, Telemetry & Customer Success",
+      "doc_id": "0f825470-86ea-453f-944e-ccc12a484fd2",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.9
+    },
+    {
+      "number": 99,
+      "title": "Customer Churn Analysis, Root Cause Classification, and Win-Back Strategy",
+      "category": "Product Operations, Telemetry & Customer Success",
+      "doc_id": "4f65b33f-b888-4e4f-9d76-28b9e4414f3f",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 5.5
+    },
+    {
+      "number": 100,
+      "title": "Customer User Conference, Executive Summits, and Regional Meetups",
+      "category": "Product Operations, Telemetry & Customer Success",
+      "doc_id": "4715d361-20b8-4dc5-a926-80bbe5b17b05",
+      "chunks": 1,
+      "status_code": 200,
+      "elapsed_ms": 6.1
+    }
+  ]
+}
