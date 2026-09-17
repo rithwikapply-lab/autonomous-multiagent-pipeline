@@ -216,8 +216,9 @@ async def test_cache_hit_and_latency_reduction(async_client):
     assert data2["cached"] is True
     t2 = data2["execution_time_ms"]
 
-    # Assert cache hit latency is lower than cold execution
-    assert t2 < t1 or t2 < 100.0, f"Expected cache hit latency ({t2}ms) to be lower than miss ({t1}ms)"
+    # Assert cache hit latency is lower than cold execution and achieves sub-10ms response time
+    assert t2 < t1, f"Expected cache hit latency ({t2}ms) to be lower than miss ({t1}ms)"
+    assert t2 < 10.0, f"Expected cache hit latency to be under 10ms, got {t2}ms"
     assert data2["analysis"]["executive_summary"] == data1["analysis"]["executive_summary"]
 
 

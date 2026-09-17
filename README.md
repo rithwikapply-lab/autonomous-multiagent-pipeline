@@ -92,7 +92,7 @@ During development, rigorous testing against adversarial queries and edge cases 
    - **How it was fixed & tested:**
      - Replaced the in-memory dictionary with persistent `redis.asyncio` caching, serializing `QueryResponse` models with a 1-hour TTL (`ex=3600`) keyed on `f"{query}_{top_k}_{enable_reranking}"`.
      - Wrapped Redis lookups and writes in graceful fallback handlers so connection timeouts or offline Redis instances log a warning and fall back to live execution without failing the user's request.
-     - Verified container restart survival (`docker restart agentic_api` retained cache hits) and automated test assertions confirming cold queries execute with `cached: false` while repeated queries return `cached: true` with sub-10ms response times.
+     - Added automated test assertions confirming cold queries execute with `cached: false` while repeated queries return `cached: true` with sub-10ms response times (`t2 < 10.0ms`).
      - Covered by `tests/test_regression_suite.py::test_cache_hit_and_latency_reduction`.
 
 5. **Unbounded Ingestion Payload Size & Embedding Cost Exposure**
