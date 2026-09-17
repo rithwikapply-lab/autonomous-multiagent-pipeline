@@ -26,6 +26,10 @@ class HybridRetriever:
         top_k: int = 5,
         in_memory_chunks: Optional[List[Dict[str, Any]]] = None
     ) -> List[Dict[str, Any]]:
+        # If explicitly passed an empty document store without a DB session, return empty
+        if session is None and in_memory_chunks is not None and len(in_memory_chunks) == 0:
+            return []
+
         # Auto-sync BM25 index from DB if session provided and index empty
         if session and not bm25_index.chunk_ids:
             try:

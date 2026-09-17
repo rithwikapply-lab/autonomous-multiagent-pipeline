@@ -71,11 +71,100 @@ def _stem(word: str) -> str:
     # 2d. Suffix -tion
     elif len(w) > 6 and w.endswith("tion"):
         w = w[:-4]
-    # 2e. Trailing silent 'e' (length > 3, e.g. take -> tak, purpose -> purpos, device -> devic)
+    # 2e. Suffix -ly (e.g. remotely -> remote -> remot, daily -> dai)
+    elif len(w) > 4 and w.endswith("ly"):
+        w = w[:-2]
+        if len(w) > 3 and w.endswith("e") and not w.endswith(("ee", "ye", "oe")):
+            w = w[:-1]
+    # 2f. Trailing silent 'e' (length > 3, e.g. take -> tak, purpose -> purpos, device -> devic)
     elif len(w) > 3 and w.endswith("e") and not w.endswith(("ee", "ye", "oe")):
         w = w[:-1]
 
     return w
+
+GENERIC_QUERY_WORDS = {
+    # Interrogatives & Question Frame
+    "what", "what's", "whatever", "which", "who", "who's", "whom", "whose",
+    "where", "where's", "when", "when's", "why", "why's", "how", "how's",
+    "is", "isn't", "are", "aren't", "was", "wasn't", "were", "weren't",
+    "do", "does", "doesn't", "did", "didn't", "doing",
+    "can", "can't", "cannot", "could", "couldn't",
+    "would", "wouldn't", "should", "shouldn't",
+    "will", "won't", "shall", "may", "might", "must",
+    "please", "tell", "me", "us", "i", "we", "you", "your", "yours", "our", "ours",
+    "the", "a", "an", "this", "that", "these", "those", "there", "here",
+
+    # Generic Document, Procedural & Aspect Framing
+    "policy", "policies", "information", "detail", "details",
+    "document", "documents", "doc", "docs", "file", "files",
+    "guide", "guides", "guideline", "guidelines",
+    "standard", "standards", "rule", "rules",
+    "framework", "frameworks", "protocol", "protocols",
+    "procedure", "procedures", "process", "processes",
+    "overview", "summary", "summaries",
+    "requirement", "requirements", "section", "sections",
+    "clause", "clauses", "term", "terms", "condition", "conditions",
+    "provision", "provisions", "spec", "specs", "specification", "specifications",
+    "timeline", "timelines", "timeframe", "timeframes", "schedule", "schedules",
+    "deadline", "deadlines", "duration", "durations", "frequency", "frequencies",
+    "option", "options", "eligibility", "eligible", "status",
+
+    # Generic Workplace, Roles & Entities
+    "employee", "employees", "worker", "workers", "staff", "personnel",
+    "team", "member", "members", "person", "people",
+    "user", "users", "customer", "customers", "client", "clients",
+    "company", "companies", "organization", "organizations", "corporate", "internal",
+    "full-time", "part-time", "contractor", "contractors",
+
+    # Generic Temporal & Measurement Units
+    "many", "much", "number", "numbers", "amount", "amounts",
+    "total", "totals", "count", "counts",
+    "day", "days", "daily", "week", "weeks", "weekly",
+    "month", "months", "monthly", "year", "years", "yearly", "annual", "annually",
+    "time", "times", "hour", "hours", "minute", "minutes",
+    "rate", "rates", "limit", "limits", "allowance", "allowances",
+    "per",
+
+    # Generic Action Verbs
+    "get", "gets", "got", "getting",
+    "have", "has", "had", "having",
+    "take", "takes", "took", "taking",
+    "give", "gives", "gave", "given", "giving",
+    "need", "needs", "needed", "needing",
+    "use", "uses", "used", "using",
+    "work", "works", "worked", "working",
+    "receive", "receives", "received", "receiving",
+    "allow", "allows", "allowed", "allowing",
+    "provide", "provides", "provided", "providing",
+    "include", "includes", "included", "including",
+    "apply", "applies", "applied", "applying",
+    "state", "states", "stated", "stating",
+    "cover", "covers", "covered", "covering",
+    "govern", "governs", "governed", "governing",
+    "mention", "mentions", "mentioned", "mentioning"
+}
+
+GENERIC_STEMS = {_stem(w) for w in GENERIC_QUERY_WORDS}
+
+def extract_discriminative_keywords(text: str) -> List[str]:
+    """
+    Extracts substantive, discriminative topic keywords from query text by
+    stripping stopwords, generic question templates, corporate framing words,
+    and temporal/quantity measurement units.
+    """
+    words = re.findall(r'\b[a-zA-Z0-9_]+\b', text.lower())
+    keywords = []
+    for w in words:
+        st = _stem(w)
+        if (
+            w not in STOP_WORDS
+            and st not in STOP_WORDS
+            and w not in GENERIC_QUERY_WORDS
+            and st not in GENERIC_STEMS
+            and len(w) > 2
+        ):
+            keywords.append(st)
+    return keywords
 
 class CrossEncoderReranker:
     """
@@ -121,16 +210,28 @@ class CrossEncoderReranker:
                     top_score = reranked[0]["rerank_score"]
                     min_score = reranked[-1]["rerank_score"]
                     spread = top_score - min_score
-                    if top_score <= -8.0 or (len(reranked) >= 2 and spread <= 2.5):
+                    if top_score <= -5.0 or (len(reranked) >= 2 and spread <= 2.5 and top_score < 0.0):
                         return []
-                    filtered = [c for c in reranked if c["rerank_score"] > -8.0 and c["rerank_score"] >= top_score - 4.0]
+                    disc_keywords = extract_discriminative_keywords(query)
+                    filtered = []
+                    for c in reranked:
+                        score = c["rerank_score"]
+                        if score <= -5.0 or score < top_score - 4.0:
+                            continue
+                        if score < 0.0 and disc_keywords:
+                            c_text = c.get("content", "").lower()
+                            c_tokens = set(_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', c_text))
+                            if not any(dk in c_tokens for dk in disc_keywords):
+                                continue
+                        filtered.append(c)
                     return filtered[:top_k]
                 return reranked[:top_k]
             except Exception as e:
                 logger.warning(f"Error during cross-encoder inference: {e}")
 
         # Fallback relevance heuristic (keyword density, coverage & position weighting)
-        q_tokens = [_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', query.lower()) if w not in STOP_WORDS and len(w) > 2]
+        disc_kws = extract_discriminative_keywords(query)
+        q_tokens = disc_kws if disc_kws else [_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', query.lower()) if w not in STOP_WORDS and len(w) > 2]
         if not q_tokens:
             q_tokens = [_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', query.lower()) if len(w) > 1]
 
@@ -143,6 +244,11 @@ class CrossEncoderReranker:
 
             if not overlap_unique and filter_irrelevant:
                 continue
+
+            if filter_irrelevant and disc_kws:
+                matched_disc = [dk for dk in disc_kws if dk in c_token_set]
+                if len(matched_disc) / len(disc_kws) <= 0.50:
+                    continue
 
             coverage = len(overlap_unique) / max(len(set(q_tokens)), 1)
             tf = sum(c_tokens.count(qt) for qt in overlap_unique)

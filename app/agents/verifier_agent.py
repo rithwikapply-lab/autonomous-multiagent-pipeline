@@ -25,15 +25,10 @@ STOP_WORDS = {
     "you'd", "you'll", "you're", "you've", "your", "yours", "yourself", "yourselves"
 }
 
-from app.search.reranker import _stem
+from app.search.reranker import _stem, extract_discriminative_keywords, GENERIC_QUERY_WORDS, GENERIC_STEMS
 import logging
 
 logger = logging.getLogger(__name__)
-
-GENERIC_QUERY_WORDS = {
-    "what", "is", "are", "your", "the", "a", "an", "about", "how", "do", "does",
-    "can", "could", "would", "please", "tell", "me", "our", "policy", "policies", "information", "details"
-}
 
 _nli_model = None
 
@@ -66,21 +61,30 @@ class VerifierAgent:
     against retrieved context to detect hallucinations and ensure faithfulness.
     """
 
-    def _is_topically_relevant(self, query: str, text: str) -> bool:
+    def _is_topically_relevant(self, query: str, text: str, min_coverage: float = 0.50) -> bool:
         """
         Validates whether the answer or claim addresses the core subject matter of the query.
+        Requires at least one discriminative keyword match and coverage exceeding min_coverage.
         """
-        words = re.findall(r'\b[a-zA-Z0-9_]+\b', query.lower())
-        substantive_q = [
-            _stem(w) for w in words
-            if w not in STOP_WORDS and w not in GENERIC_QUERY_WORDS and _stem(w) not in GENERIC_QUERY_WORDS and len(w) > 2
-        ]
-        # If the query has no specific non-generic topic words, default to true
-        if not substantive_q:
-            return True
+        disc_q = extract_discriminative_keywords(query)
+        if not disc_q:
+            words = re.findall(r'\b[a-zA-Z0-9_]+\b', query.lower())
+            substantive_q = [
+                _stem(w) for w in words
+                if w not in STOP_WORDS and _stem(w) not in STOP_WORDS
+                and w not in GENERIC_QUERY_WORDS and _stem(w) not in GENERIC_STEMS
+                and len(w) > 2
+            ]
+            if not substantive_q:
+                return True
+            disc_q = substantive_q
 
         text_words = set([_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', text.lower())])
-        return any(q_stem in text_words for q_stem in substantive_q)
+        matched = [dk for dk in disc_q if dk in text_words]
+        if not matched:
+            return False
+        coverage = len(matched) / len(disc_q)
+        return coverage > min_coverage
 
     def _is_claim_supported(self, claim: str, context_text: str, chunks: List[Dict[str, Any]]) -> bool:
         """
@@ -280,11 +284,11 @@ class VerifierAgent:
         # 2. Verify discrete factual claims against context, topical relevance, and semantic entailment
         for claim in clean_claims:
             is_grounded = self._is_claim_supported(claim, context_text, chunks)
-            claim_is_topical = self._is_topically_relevant(query, claim)
+            claim_is_topical = self._is_topically_relevant(query, claim, min_coverage=0.0)
 
             if not is_grounded:
                 unsupported_claims.append(claim)
-            elif not (claim_is_topical or is_context_topical):
+            elif not (claim_is_topical and is_context_topical):
                 unsupported_claims.append(f"Claim is grounded in context but off-topic for query '{query}': {claim}")
             else:
                 # Tier 2: Semantic Entailment & Condition Guard (runs only on claims that pass Tier 1)

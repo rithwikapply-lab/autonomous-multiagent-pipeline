@@ -4,6 +4,7 @@ from app.models.state import AgentState
 from app.agents.research_agent import research_agent
 from app.agents.verifier_agent import verifier_agent
 from app.search.hybrid_retriever import hybrid_retriever
+from app.search.reranker import cross_encoder_reranker
 
 # =====================================================================
 # 1. Hallucination-via-Fallback Test Cases
@@ -309,3 +310,195 @@ async def test_ingestion_success_document_listing_and_query_verification(async_c
     assert verification is not None
     assert verification["is_faithful"] is True
     assert verification["hallucination_score"] == 0.0
+
+
+# =====================================================================
+# 6. Topical Relevance & Vocabulary Overlap Regression Cases
+# =====================================================================
+
+DOC_VACATION = {
+    "chunk_id": "chunk_vacation_01",
+    "doc_id": "doc_vacation_policy",
+    "content": "Company Vacation Policy All full-time employees receive 15 paid vacation days per calendar year. Vacation requests must be submitted at least two weeks in advance. Unused vacation days roll over up to a maximum of 5 days."
+}
+
+DOC_REMOTE_WORK = {
+    "chunk_id": "chunk_remote_01",
+    "doc_id": "doc_remote_work_policy",
+    "content": "Remote Work Policy 2026 Employees may work remotely up to 3 days per week with manager approval. Core working hours are 10 AM to 4 PM EST. A one-time stipend of $500 is provided for home office equipment."
+}
+
+DOC_PARENTAL_LEAVE = {
+    "chunk_id": "chunk_parental_01",
+    "doc_id": "doc_parental_leave_policy",
+    "content": "Parental Leave Guidelines Eligible employees receive up to 12 weeks of fully paid parental leave following the birth or adoption of a child. Leave must be taken within the first 12 months."
+}
+
+CORPUS_REAL_DOCS = [DOC_VACATION, DOC_REMOTE_WORK, DOC_PARENTAL_LEAVE]
+
+
+@pytest.mark.asyncio
+async def test_regression_unmentioned_sick_days_query():
+    """
+    Exact User Bug Reproduction:
+    Query: 'How many sick days do employees get?' against Vacation Policy, Remote Work Policy,
+    and Parental Leave Guidelines — none of which discuss sick leave.
+    
+    Verifies:
+    1. Cross-encoder relevance gate rejects all 3 chunks (rerank returns []).
+    2. Even if candidate chunks reach ResearchAgent, topical match check fails.
+    3. Returns standard no-information response with 0.0 confidence score and empty metrics/claims.
+    4. Verifier confirms honest lack-of-info admission with is_faithful=True and 0.0 hallucination score.
+    5. Does NOT fabricate an answer using Vacation Policy or misattribute '3 days per week'.
+    """
+    query = "How many sick days do employees get?"
+
+    # 1. Reranker relevance gate: all 3 candidate chunks must be filtered out
+    reranked = cross_encoder_reranker.rerank(query, CORPUS_REAL_DOCS, filter_irrelevant=True)
+    assert reranked == [], f"Expected reranker to reject all chunks, got: {reranked}"
+
+    # 2. ResearchAgent topical relevance gate (even if chunks were supplied)
+    state = AgentState(query=query)
+    state.retrieved_chunks = CORPUS_REAL_DOCS
+    state = await research_agent.analyze(state)
+
+    summary = state.draft_summary["executive_summary"]
+    assert "I don't have information about this in the provided documents." in summary
+    assert state.draft_summary["confidence_score"] == 0.0
+    assert state.draft_summary["key_metrics"] == []
+    assert state.draft_summary["verifiable_claims"] == []
+
+    # 3. VerifierAgent confirms faithful admission of lack of knowledge
+    state = verifier_agent.verify(state)
+    report = state.final_output["verification_report"]
+    assert report["is_faithful"] is True
+    assert report["hallucination_score"] == 0.0
+    assert len(report["unsupported_claims"]) == 0
+
+
+@pytest.mark.asyncio
+async def test_generalization_fake_question_sharing_vocabulary_pet_policy():
+    """
+    Generalization Case: Fake question sharing vocabulary ('policy', 'remote', 'workers')
+    with Remote Work Policy, but Remote Work Policy never mentions pets.
+    Must return graceful no-information response.
+    """
+    query = "What is the pet policy for remote workers?"
+
+    state = AgentState(query=query)
+    state.retrieved_chunks = CORPUS_REAL_DOCS
+    state = await research_agent.analyze(state)
+
+    summary = state.draft_summary["executive_summary"]
+    assert "I don't have information about this in the provided documents." in summary
+    assert state.draft_summary["confidence_score"] == 0.0
+    assert state.draft_summary["key_metrics"] == []
+    assert state.draft_summary["verifiable_claims"] == []
+
+    state = verifier_agent.verify(state)
+    report = state.final_output["verification_report"]
+    assert report["is_faithful"] is True
+    assert report["hallucination_score"] == 0.0
+
+
+@pytest.mark.asyncio
+async def test_generalization_fake_question_sharing_vocabulary_vacation_charity():
+    """
+    Generalization Case: Fake question sharing vocabulary ('employees', 'unused', 'vacation', 'days')
+    with Vacation Policy, but Vacation Policy never mentions charity donations.
+    Must return graceful no-information response.
+    """
+    query = "Can employees donate unused vacation days to charity?"
+
+    state = AgentState(query=query)
+    state.retrieved_chunks = CORPUS_REAL_DOCS
+    state = await research_agent.analyze(state)
+
+    summary = state.draft_summary["executive_summary"]
+    assert "I don't have information about this in the provided documents." in summary
+    assert state.draft_summary["confidence_score"] == 0.0
+    assert state.draft_summary["key_metrics"] == []
+    assert state.draft_summary["verifiable_claims"] == []
+
+    state = verifier_agent.verify(state)
+    report = state.final_output["verification_report"]
+    assert report["is_faithful"] is True
+    assert report["hallucination_score"] == 0.0
+
+
+@pytest.mark.asyncio
+async def test_generalization_real_question_vacation_policy():
+    """
+    Generalization Case: Genuine question about Vacation Policy.
+    Must accurately match, extract 15 days metric, and pass verification faithfully.
+    """
+    query = "How many vacation days do full-time employees receive?"
+
+    reranked = cross_encoder_reranker.rerank(query, CORPUS_REAL_DOCS, filter_irrelevant=True)
+    assert len(reranked) >= 1
+    assert reranked[0]["chunk_id"] == "chunk_vacation_01"
+
+    state = AgentState(query=query)
+    state.retrieved_chunks = [reranked[0]]
+    state = await research_agent.analyze(state)
+
+    assert state.draft_summary["confidence_score"] >= 0.80
+    metric_values = [str(m["value"]) for m in state.draft_summary["key_metrics"]]
+    assert "15" in metric_values
+
+    state = verifier_agent.verify(state)
+    report = state.final_output["verification_report"]
+    assert report["is_faithful"] is True
+    assert report["hallucination_score"] == 0.0
+
+
+@pytest.mark.asyncio
+async def test_generalization_real_question_remote_work_policy():
+    """
+    Generalization Case: Genuine question about Remote Work Policy.
+    Must accurately match, extract 3 days per week metric, and pass verification faithfully.
+    """
+    query = "How many days per week can employees work remotely?"
+
+    reranked = cross_encoder_reranker.rerank(query, CORPUS_REAL_DOCS, filter_irrelevant=True)
+    assert len(reranked) >= 1
+    assert reranked[0]["chunk_id"] == "chunk_remote_01"
+
+    state = AgentState(query=query)
+    state.retrieved_chunks = [reranked[0]]
+    state = await research_agent.analyze(state)
+
+    assert state.draft_summary["confidence_score"] >= 0.80
+    metric_values = [str(m["value"]) for m in state.draft_summary["key_metrics"]]
+    assert "3" in metric_values
+
+    state = verifier_agent.verify(state)
+    report = state.final_output["verification_report"]
+    assert report["is_faithful"] is True
+    assert report["hallucination_score"] == 0.0
+
+
+@pytest.mark.asyncio
+async def test_generalization_real_question_parental_leave_policy():
+    """
+    Generalization Case: Genuine question about Parental Leave Guidelines.
+    Must accurately match, extract 12 weeks metric, and pass verification faithfully.
+    """
+    query = "How many weeks of parental leave are provided?"
+
+    reranked = cross_encoder_reranker.rerank(query, CORPUS_REAL_DOCS, filter_irrelevant=True)
+    assert len(reranked) >= 1
+    assert reranked[0]["chunk_id"] == "chunk_parental_01"
+
+    state = AgentState(query=query)
+    state.retrieved_chunks = [reranked[0]]
+    state = await research_agent.analyze(state)
+
+    assert state.draft_summary["confidence_score"] >= 0.80
+    metric_values = [str(m["value"]) for m in state.draft_summary["key_metrics"]]
+    assert "12" in metric_values
+
+    state = verifier_agent.verify(state)
+    report = state.final_output["verification_report"]
+    assert report["is_faithful"] is True
+    assert report["hallucination_score"] == 0.0

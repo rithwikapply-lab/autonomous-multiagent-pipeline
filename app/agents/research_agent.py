@@ -6,7 +6,7 @@ from app.config import settings
 from app.models.schemas import AnalyticalSummary, MetricFinding
 from app.models.state import AgentState, AgentThoughtStep
 from app.agents.tools import AgentTools
-from app.search.reranker import STOP_WORDS, _stem
+from app.search.reranker import STOP_WORDS, _stem, extract_discriminative_keywords
 import logging
 
 logger = logging.getLogger(__name__)
@@ -61,15 +61,21 @@ Rules:
             ))
             return state
 
-        # Check if chunks contain any substantive query keywords
-        q_tokens = [
-            _stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', query.lower())
-            if w not in STOP_WORDS and len(w) > 2
-        ]
+        # Check if chunks contain substantive discriminative query keywords
+        disc_keywords = extract_discriminative_keywords(query)
         context_text = " ".join([c.get("content", "").lower() for c in chunks])
         c_tokens = set([_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', context_text)])
 
-        has_topical_match = any(qt in c_tokens for qt in q_tokens) if q_tokens else True
+        if disc_keywords:
+            matched_disc = [dk for dk in disc_keywords if dk in c_tokens]
+            coverage = len(matched_disc) / len(disc_keywords)
+            has_topical_match = coverage > 0.50
+        else:
+            q_tokens = [
+                _stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', query.lower())
+                if w not in STOP_WORDS and len(w) > 2
+            ]
+            has_topical_match = any(qt in c_tokens for qt in q_tokens) if q_tokens else True
         if not has_topical_match:
             summary = AnalyticalSummary(
                 query=query,
@@ -144,14 +150,27 @@ Rules:
 
         # 2. Build synthesis summary
         combined_text = " ".join([c.get("content", "") for c in chunks])
-        first_sentence = combined_text.split(".")[0].strip() if "." in combined_text else combined_text[:150].strip()
+        target_tokens = disc_keywords if disc_keywords else q_tokens
 
-        # Extract concrete claim sentences from retrieved chunks
+        # Select candidate sentences
+        candidate_sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', combined_text) if len(s.strip()) > 15]
+        topical_sentences = []
+        if target_tokens:
+            topical_sentences = [
+                s for s in candidate_sentences
+                if any(t in set(_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', s.lower())) for t in target_tokens)
+            ]
+        best_sentence = topical_sentences[0] if topical_sentences else (candidate_sentences[0] if candidate_sentences else combined_text[:150].strip())
+
+        # Extract concrete claim sentences from retrieved chunks addressing query topic
         extracted_claims = []
         for c in chunks:
             content = c.get("content", "")
             sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', content) if len(s.strip()) > 15]
             for s in sentences:
+                s_tokens = set([_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', s.lower())])
+                if target_tokens and not any(t in s_tokens for t in target_tokens):
+                    continue
                 if s not in extracted_claims:
                     extracted_claims.append(s)
                 if len(extracted_claims) >= 3:
@@ -161,9 +180,9 @@ Rules:
 
         summary = AnalyticalSummary(
             query=query,
-            executive_summary=f"Analysis based on {len(chunks)} verified document chunks: {first_sentence}.",
+            executive_summary=f"Analysis based on {len(chunks)} verified document chunks: {best_sentence}.",
             key_metrics=all_metrics[:5],
-            verifiable_claims=extracted_claims if extracted_claims else ([first_sentence] if first_sentence else []),
+            verifiable_claims=extracted_claims if extracted_claims else ([best_sentence] if best_sentence else []),
             confidence_score=0.88,
             source_citations=citations[:5]
         )
