@@ -26,13 +26,37 @@ STOP_WORDS = {
     "you'd", "you'll", "you're", "you've", "your", "yours", "yourself", "yourselves"
 }
 
+IRREGULAR_STEMS = {
+    "lost": "los",
+    "losing": "los",
+    "paid": "pay",
+    "paying": "pay",
+    "left": "leav",
+    "leaving": "leav",
+    "bought": "buy",
+    "buying": "buy",
+    "sold": "sell",
+    "selling": "sell",
+    "chosen": "choos",
+    "chose": "choos",
+    "held": "hold",
+    "holding": "hold",
+    "sent": "send",
+    "sending": "send",
+    "met": "meet",
+    "meeting": "meet",
+}
+
 def _stem(word: str) -> str:
     """
     Two-phase deterministic morphological stemmer:
+    Phase 0: Irregular verb and participle normalization (e.g. lost -> los, paid -> pay).
     Phase 1: Plural & inflectional normalization with root protection (-ss, -ies, -sses, -s, -es).
     Phase 2: Derivational & verb inflections (-eed, -ing, -ed, -tion, silent -e) with consonant undoubling.
     """
     w = word.lower().strip()
+    if w in IRREGULAR_STEMS:
+        return IRREGULAR_STEMS[w]
     if len(w) <= 2:
         return w
 
@@ -91,6 +115,8 @@ GENERIC_QUERY_WORDS = {
     "can", "can't", "cannot", "could", "couldn't",
     "would", "wouldn't", "should", "shouldn't",
     "will", "won't", "shall", "may", "might", "must",
+    "happen", "happens", "happened", "happening",
+    "occur", "occurs", "occurred", "occurring",
     "please", "tell", "me", "us", "i", "we", "you", "your", "yours", "our", "ours",
     "the", "a", "an", "this", "that", "these", "those", "there", "here",
 

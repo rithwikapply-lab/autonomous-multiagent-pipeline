@@ -334,6 +334,12 @@ DOC_PARENTAL_LEAVE = {
     "content": "Parental Leave Guidelines Eligible employees receive up to 12 weeks of fully paid parental leave following the birth or adoption of a child. Leave must be taken within the first 12 months."
 }
 
+DOC_EQUIPMENT = {
+    "chunk_id": "chunk_equipment_01",
+    "doc_id": "doc_equipment_policy",
+    "content": "Employee Equipment and Expense Policy Company-issued laptops, smartphones, and peripheral devices remain the property of the organization. Damaged or lost equipment must be reported to IT within 48 hours. Employees may request replacement equipment through the internal service portal."
+}
+
 CORPUS_REAL_DOCS = [DOC_VACATION, DOC_REMOTE_WORK, DOC_PARENTAL_LEAVE]
 
 
@@ -374,6 +380,72 @@ async def test_regression_unmentioned_sick_days_query():
     assert report["is_faithful"] is True
     assert report["hallucination_score"] == 0.0
     assert len(report["unsupported_claims"]) == 0
+
+
+@pytest.mark.asyncio
+async def test_regression_lost_laptop_equipment_policy():
+    """
+    Exact User Bug Reproduction: False-Negative Regression on Paraphrase & Irregular Inflection.
+    Query: 'What happens if an employee loses their laptop?'
+    Retrieved Chunk: Employee Equipment and Expense Policy (chunk_equipment_01), containing:
+    'Damaged or lost equipment must be reported to IT within 48 hours.'
+
+    ARCHITECTURAL LIMITATION & DESIGN NOTE:
+    Rule-based discriminative keyword coverage has an inherent blind spot for semantic paraphrases:
+    1. Morphological/Stem Divergence: Suffix-stripping stemmers do not unify irregular verb inflections
+       such as 'loses' (stem: 'los') vs. past participle 'lost' (stem: 'lost' without irregular mapping).
+    2. Entity Hypernym / Synecdoche: The user's query refers to an instance ('laptop'), while the policy
+       document states the governing rule using the categorical hypernym ('equipment').
+    3. Cross-Encoder Semantic Resolution: The neural cross-encoder (ms-marco-MiniLM-L-6-v2) already
+       exhibits strong semantic comprehension, ranking chunk_equipment_01 #1 with a positive rerank score
+       (> +2.0) across the mixed corpus.
+    A rigid lexical-only coverage gate causes false-negative rejections of genuinely answerable questions.
+    The pipeline addresses this by:
+    - Normalizing irregular inflection pairs ('lost' -> 'los') in _stem().
+    - Treating interrogative framing verbs ('happens', 'occur') as generic query words.
+    - Allowing high cross-encoder scores (rerank_score >= 0.0) with partial keyword coverage to satisfy
+      topical matching.
+    - Scoring candidate sentences and claims by keyword matches + quantitative metric presence.
+
+    Verifies:
+    1. Cross-encoder reranks chunk_equipment_01 as #1 with positive rerank_score > 0.0 from mixed corpus.
+    2. ResearchAgent successfully identifies topical match (confidence >= 0.80), extracts metric 48,
+       and incorporates the directly relevant sentence ('Damaged or lost equipment...') into the summary.
+    3. VerifierAgent confirms faithfulness (is_faithful=True, hallucination_score=0.0) without
+       falsely flagging the claim or metric as off-topic.
+    """
+    query = "What happens if an employee loses their laptop?"
+    mixed_corpus = CORPUS_REAL_DOCS + [DOC_EQUIPMENT]
+
+    # 1. Reranker selects equipment chunk as top candidate
+    reranked = cross_encoder_reranker.rerank(query, mixed_corpus, filter_irrelevant=True)
+    assert len(reranked) >= 1, f"Expected reranker to keep relevant chunk, got: {reranked}"
+    assert reranked[0]["chunk_id"] == "chunk_equipment_01"
+    assert reranked[0].get("rerank_score", -999.0) > 0.0
+
+    # 2. ResearchAgent deterministic synthesis extracts relevant sentence and metrics
+    state = AgentState(query=query)
+    state.retrieved_chunks = [reranked[0]]
+    state = await research_agent.analyze(state)
+
+    summary = state.draft_summary["executive_summary"]
+    assert "I don't have information about this in the provided documents." not in summary
+    assert "Damaged or lost equipment must be reported to IT within 48 hours" in summary
+    assert state.draft_summary["confidence_score"] >= 0.80
+
+    metric_values = [str(m["value"]) for m in state.draft_summary["key_metrics"]]
+    assert "48" in metric_values
+
+    claims = state.draft_summary["verifiable_claims"]
+    assert any("Damaged or lost equipment must be reported to IT within 48 hours" in c for c in claims)
+
+    # 3. VerifierAgent audits factual grounding & topical relevance
+    state = verifier_agent.verify(state)
+    report = state.final_output["verification_report"]
+    assert report["is_faithful"] is True
+    assert report["hallucination_score"] == 0.0
+    assert len(report["unsupported_claims"]) == 0
+    assert any("48" in c for c in report["verified_claims"])
 
 
 @pytest.mark.asyncio

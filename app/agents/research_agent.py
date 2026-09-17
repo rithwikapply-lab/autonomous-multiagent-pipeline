@@ -66,10 +66,16 @@ Rules:
         context_text = " ".join([c.get("content", "").lower() for c in chunks])
         c_tokens = set([_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', context_text)])
 
+        top_rerank_score = max([c.get("rerank_score", -999.0) for c in chunks], default=-999.0)
         if disc_keywords:
             matched_disc = [dk for dk in disc_keywords if dk in c_tokens]
             coverage = len(matched_disc) / len(disc_keywords)
-            has_topical_match = coverage > 0.50
+            # High neural cross-encoder confidence (rerank_score >= 0.0) indicates strong semantic relevance,
+            # allowing topical match when paraphrase/synonym coverage is partial (e.g. laptop ~ equipment).
+            if top_rerank_score >= 0.0 and len(matched_disc) >= 1:
+                has_topical_match = True
+            else:
+                has_topical_match = coverage > 0.50
         else:
             q_tokens = [
                 _stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', query.lower())
@@ -152,14 +158,20 @@ Rules:
         combined_text = " ".join([c.get("content", "") for c in chunks])
         target_tokens = disc_keywords if disc_keywords else q_tokens
 
-        # Select candidate sentences
+        # Select candidate sentences scored by keyword overlap and metric relevance
         candidate_sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', combined_text) if len(s.strip()) > 15]
         topical_sentences = []
         if target_tokens:
-            topical_sentences = [
-                s for s in candidate_sentences
-                if any(t in set(_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', s.lower())) for t in target_tokens)
-            ]
+            scored_candidates = []
+            for s in candidate_sentences:
+                s_tokens = set(_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', s.lower()))
+                matches = [t for t in target_tokens if t in s_tokens]
+                if matches:
+                    has_metric = any(str(m.value) in s for m in all_metrics)
+                    score = len(matches) * 2.0 + (2.0 if has_metric else 0.0)
+                    scored_candidates.append((score, s))
+            scored_candidates.sort(key=lambda x: x[0], reverse=True)
+            topical_sentences = [s for _, s in scored_candidates]
         best_sentence = topical_sentences[0] if topical_sentences else (candidate_sentences[0] if candidate_sentences else combined_text[:150].strip())
 
         # Extract concrete claim sentences from retrieved chunks addressing query topic
@@ -167,10 +179,17 @@ Rules:
         for c in chunks:
             content = c.get("content", "")
             sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', content) if len(s.strip()) > 15]
+            scored_claims = []
             for s in sentences:
                 s_tokens = set([_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', s.lower())])
-                if target_tokens and not any(t in s_tokens for t in target_tokens):
+                matches = [t for t in target_tokens if t in s_tokens]
+                if target_tokens and not matches:
                     continue
+                has_metric = any(str(m.value) in s for m in all_metrics)
+                score = len(matches) * 2.0 + (2.0 if has_metric else 0.0)
+                scored_claims.append((score, s))
+            scored_claims.sort(key=lambda x: x[0], reverse=True)
+            for _, s in scored_claims:
                 if s not in extracted_claims:
                     extracted_claims.append(s)
                 if len(extracted_claims) >= 3:
