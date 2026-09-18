@@ -6,7 +6,10 @@ from app.config import settings
 from app.models.schemas import AnalyticalSummary, MetricFinding
 from app.models.state import AgentState, AgentThoughtStep
 from app.agents.tools import AgentTools
-from app.search.reranker import STOP_WORDS, _stem, extract_discriminative_keywords
+from app.search.reranker import (
+    STOP_WORDS, _stem, extract_discriminative_keywords,
+    extract_query_named_entities, cross_encoder_reranker
+)
 import logging
 
 logger = logging.getLogger(__name__)
@@ -61,13 +64,18 @@ Rules:
             ))
             return state
 
-        # Check if chunks contain substantive discriminative query keywords
+        # Check if chunks contain substantive discriminative query keywords and required entities
         disc_keywords = extract_discriminative_keywords(query)
-        context_text = " ".join([c.get("content", "").lower() for c in chunks])
+        query_entities = extract_query_named_entities(query)
+        context_text = " ".join([(c.get("content", "") + " " + c.get("title", "")).lower() for c in chunks])
         c_tokens = set([_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', context_text)])
 
         top_rerank_score = max([c.get("rerank_score", -999.0) for c in chunks], default=-999.0)
-        if disc_keywords:
+
+        # Named entity grounding check: if query names a specific proper noun, candidate chunks must mention it
+        if query_entities and not any(ent in c_tokens for ent in query_entities):
+            has_topical_match = False
+        elif disc_keywords:
             matched_disc = [dk for dk in disc_keywords if dk in c_tokens]
             coverage = len(matched_disc) / len(disc_keywords)
             # High neural cross-encoder confidence (rerank_score >= 0.0) indicates strong semantic relevance,
@@ -139,61 +147,71 @@ Rules:
                 logger.warning(f"LLM API call failed ({e}). Using deterministic analytical synthesis engine.")
 
         # Deterministic analysis engine (offline / mock / local testing mode)
-        # 1. Tool execution: Extract numerical metrics
+        # 1. Tool execution: Extract numerical metrics scoped to topical sentences
+        combined_text = " ".join([c.get("content", "") for c in chunks])
+        non_entity_kws = [k for k in disc_keywords if k not in query_entities] if disc_keywords else []
+        target_tokens = non_entity_kws if non_entity_kws else (disc_keywords if disc_keywords else q_tokens)
+
         all_metrics: List[MetricFinding] = []
         citations = []
         for c in chunks:
             c_id = c.get("chunk_id", "chunk_unknown")
             citations.append(c_id)
-            extracted = AgentTools.extract_numbers_and_percentages(c.get("content", ""))
-            for item in extracted:
-                all_metrics.append(MetricFinding(
-                    metric_name=item["context"],
-                    value=item["value"],
-                    source_chunk_id=c_id,
-                    confidence=0.92
-                ))
+            c_sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', c.get("content", "")) if len(s.strip()) > 10]
+            for s in c_sentences:
+                s_tokens = set([_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', s.lower())])
+                is_topical_s = any(t in s_tokens for t in target_tokens) if target_tokens else True
+                if not is_topical_s:
+                    continue
+                extracted = AgentTools.extract_numbers_and_percentages(s)
+                for item in extracted:
+                    all_metrics.append(MetricFinding(
+                        metric_name=item["context"],
+                        value=item["value"],
+                        source_chunk_id=c_id,
+                        confidence=0.92
+                    ))
+
+        # Fallback if no topical metrics found but candidate sentences exist
+        if not all_metrics:
+            for c in chunks:
+                c_id = c.get("chunk_id", "chunk_unknown")
+                extracted = AgentTools.extract_numbers_and_percentages(c.get("content", ""))
+                for item in extracted:
+                    all_metrics.append(MetricFinding(
+                        metric_name=item["context"],
+                        value=item["value"],
+                        source_chunk_id=c_id,
+                        confidence=0.92
+                    ))
 
         # 2. Build synthesis summary
-        combined_text = " ".join([c.get("content", "") for c in chunks])
-        target_tokens = disc_keywords if disc_keywords else q_tokens
-
         # Select candidate sentences scored by keyword overlap and metric relevance
         candidate_sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', combined_text) if len(s.strip()) > 15]
         topical_sentences = []
-        if target_tokens:
-            scored_candidates = []
+        scored_candidates = []
+        if candidate_sentences:
+            from app.search.reranker import IRREGULAR_STEMS
+            action_synonym_stems = set(IRREGULAR_STEMS.values())
             for s in candidate_sentences:
                 s_tokens = set(_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', s.lower()))
-                matches = [t for t in target_tokens if t in s_tokens]
+                matches = [t for t in target_tokens if t in s_tokens] if target_tokens else []
                 if matches:
                     has_metric = any(str(m.value) in s for m in all_metrics)
-                    score = len(matches) * 2.0 + (2.0 if has_metric else 0.0)
+                    # Weight action verbs / normalized synonyms (e.g. export, los) with extra priority
+                    action_weight = sum(2.0 for t in matches if t in action_synonym_stems)
+                    score = len(matches) * 2.0 + action_weight + (2.0 if has_metric else 0.0)
                     scored_candidates.append((score, s))
+
             scored_candidates.sort(key=lambda x: x[0], reverse=True)
             topical_sentences = [s for _, s in scored_candidates]
         best_sentence = topical_sentences[0] if topical_sentences else (candidate_sentences[0] if candidate_sentences else combined_text[:150].strip())
 
         # Extract concrete claim sentences from retrieved chunks addressing query topic
         extracted_claims = []
-        for c in chunks:
-            content = c.get("content", "")
-            sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', content) if len(s.strip()) > 15]
-            scored_claims = []
-            for s in sentences:
-                s_tokens = set([_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', s.lower())])
-                matches = [t for t in target_tokens if t in s_tokens]
-                if target_tokens and not matches:
-                    continue
-                has_metric = any(str(m.value) in s for m in all_metrics)
-                score = len(matches) * 2.0 + (2.0 if has_metric else 0.0)
-                scored_claims.append((score, s))
-            scored_claims.sort(key=lambda x: x[0], reverse=True)
-            for _, s in scored_claims:
-                if s not in extracted_claims:
-                    extracted_claims.append(s)
-                if len(extracted_claims) >= 3:
-                    break
+        for _, s in scored_candidates:
+            if s not in extracted_claims:
+                extracted_claims.append(s)
             if len(extracted_claims) >= 3:
                 break
 

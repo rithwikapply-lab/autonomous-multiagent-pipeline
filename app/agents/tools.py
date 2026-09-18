@@ -19,10 +19,18 @@ class AgentTools:
 
     @staticmethod
     def extract_numbers_and_percentages(text: str) -> List[Dict[str, str]]:
-        """Extracts numerical quantities and percentages with surrounding context."""
-        pattern = r'(\b\d+(?:\.\d+)?%?|\$\d+(?:\.\d+)?(?:\s?[kKmMbBtT])?)\s+([a-zA-Z\s]{3,25})'
+        """Extracts numerical quantities, magnitudes, dates, and percentages with surrounding context."""
+        pattern = r'(\$?\b\d+(?:,\d{3})*(?:\.\d+)?%?(?:\s+(?:million|billion|trillion))?|\$\d+(?:\.\d+)?(?:\s?[kKmMbBtT])?)\s+([a-zA-Z\s\-]{2,30})'
         matches = re.findall(pattern, text)
-        return [{"value": m[0], "context": m[1].strip()} for m in matches]
+        results = [{"value": m[0], "context": m[1].strip()} for m in matches]
+
+        # Extract calendar dates (e.g. May 26, 2026)
+        date_pattern = r'\b((?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},?\s+\d{4})\b'
+        date_matches = re.findall(date_pattern, text, re.IGNORECASE)
+        for dm in date_matches:
+            results.append({"value": dm, "context": "effective date"})
+
+        return results
 
     @staticmethod
     def inspect_chunk(chunk_id: str, chunks: List[Dict[str, Any]]) -> Dict[str, Any]:

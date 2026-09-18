@@ -45,14 +45,20 @@ IRREGULAR_STEMS = {
     "sending": "send",
     "met": "meet",
     "meeting": "meet",
+    # Data mobility / export synonyms
+    "download": "export",
+    "downloading": "export",
+    "downloads": "export",
+    "downloaded": "export",
+    "takeout": "export",
 }
 
 def _stem(word: str) -> str:
     """
     Two-phase deterministic morphological stemmer:
-    Phase 0: Irregular verb and participle normalization (e.g. lost -> los, paid -> pay).
+    Phase 0: Irregular verb, participle, and synonym normalization (e.g. lost -> los, download -> export).
     Phase 1: Plural & inflectional normalization with root protection (-ss, -ies, -sses, -s, -es).
-    Phase 2: Derivational & verb inflections (-eed, -ing, -ed, -tion, silent -e) with consonant undoubling.
+    Phase 2: Derivational & verb inflections (-eed, -ing, -ed, -tion, -ly, -ive, silent -e) with consonant undoubling.
     """
     w = word.lower().strip()
     if w in IRREGULAR_STEMS:
@@ -100,7 +106,10 @@ def _stem(word: str) -> str:
         w = w[:-2]
         if len(w) > 3 and w.endswith("e") and not w.endswith(("ee", "ye", "oe")):
             w = w[:-1]
-    # 2f. Trailing silent 'e' (length > 3, e.g. take -> tak, purpose -> purpos, device -> devic)
+    # 2f. Suffix -ive (e.g. effective -> effect, protective -> protect, selective -> select)
+    elif len(w) > 5 and w.endswith("ive"):
+        w = w[:-3]
+    # 2g. Trailing silent 'e' (length > 3, e.g. take -> tak, purpose -> purpos, device -> devic)
     elif len(w) > 3 and w.endswith("e") and not w.endswith(("ee", "ye", "oe")):
         w = w[:-1]
 
@@ -117,11 +126,18 @@ GENERIC_QUERY_WORDS = {
     "will", "won't", "shall", "may", "might", "must",
     "happen", "happens", "happened", "happening",
     "occur", "occurs", "occurred", "occurring",
+    "see", "sees", "saw", "seen", "seeing",
+    "look", "looks", "looked", "looking",
+    "view", "views", "viewed", "viewing",
+    "check", "checks", "checked", "checking",
+    "know", "knows", "knew", "known", "knowing",
+    "seem", "seems", "seemed", "seeming",
+    "appear", "appears", "appeared", "appearing",
     "please", "tell", "me", "us", "i", "we", "you", "your", "yours", "our", "ours",
     "the", "a", "an", "this", "that", "these", "those", "there", "here",
 
     # Generic Document, Procedural & Aspect Framing
-    "policy", "policies", "information", "detail", "details",
+    "policy", "policies", "privacy", "information", "detail", "details",
     "document", "documents", "doc", "docs", "file", "files",
     "guide", "guides", "guideline", "guidelines",
     "standard", "standards", "rule", "rules",
@@ -147,6 +163,8 @@ GENERIC_QUERY_WORDS = {
     "total", "totals", "count", "counts",
     "day", "days", "daily", "week", "weeks", "weekly",
     "month", "months", "monthly", "year", "years", "yearly", "annual", "annually",
+    "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday",
+    "january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december",
     "time", "times", "hour", "hours", "minute", "minutes",
     "rate", "rates", "limit", "limits", "allowance", "allowances",
     "per",
@@ -176,7 +194,7 @@ def extract_discriminative_keywords(text: str) -> List[str]:
     """
     Extracts substantive, discriminative topic keywords from query text by
     stripping stopwords, generic question templates, corporate framing words,
-    and temporal/quantity measurement units.
+    and temporal/quantity measurement units. Returned list is deduplicated.
     """
     words = re.findall(r'\b[a-zA-Z0-9_]+\b', text.lower())
     keywords = []
@@ -190,7 +208,29 @@ def extract_discriminative_keywords(text: str) -> List[str]:
             and len(w) > 2
         ):
             keywords.append(st)
-    return keywords
+    return list(dict.fromkeys(keywords))
+
+def extract_query_named_entities(query: str) -> List[str]:
+    """
+    Extracts specific proper nouns and named entities (e.g. 'Google', 'AWS')
+    from the query. Filters out stopwords, generic corporate/procedural words,
+    and sentence-initial common word capitalization.
+    """
+    words = re.findall(r'\b[a-zA-Z0-9_\-]+\b', query)
+    entities = []
+    for i, w in enumerate(words):
+        w_low = w.lower()
+        if w_low in STOP_WORDS or _stem(w_low) in STOP_WORDS:
+            continue
+        if w_low in GENERIC_QUERY_WORDS or _stem(w_low) in GENERIC_STEMS:
+            continue
+        # Proper nouns: Capitalized words not at the very start of the sentence
+        if i > 0 and w[0].isupper() and len(w) > 1:
+            entities.append(_stem(w_low))
+        # Acronyms or all-caps entities (e.g. AWS, HIPAA, SOC) even at start
+        elif w.isupper() and len(w) >= 2 and not w_low in STOP_WORDS:
+            entities.append(_stem(w_low))
+    return list(dict.fromkeys(entities))
 
 class CrossEncoderReranker:
     """
@@ -239,14 +279,18 @@ class CrossEncoderReranker:
                     if top_score <= -5.0 or (len(reranked) >= 2 and spread <= 2.5 and top_score < 0.0):
                         return []
                     disc_keywords = extract_discriminative_keywords(query)
+                    query_entities = extract_query_named_entities(query)
                     filtered = []
                     for c in reranked:
                         score = c["rerank_score"]
                         if score <= -5.0 or score < top_score - 4.0:
                             continue
+                        c_text = (c.get("content", "") + " " + c.get("title", "")).lower()
+                        c_tokens = set(_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', c_text))
+                        # Named entity check: if query names a specific proper noun, candidate chunk MUST mention it
+                        if query_entities and not any(ent in c_tokens for ent in query_entities):
+                            continue
                         if score < 0.0 and disc_keywords:
-                            c_text = c.get("content", "").lower()
-                            c_tokens = set(_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', c_text))
                             if not any(dk in c_tokens for dk in disc_keywords):
                                 continue
                         filtered.append(c)
@@ -257,19 +301,24 @@ class CrossEncoderReranker:
 
         # Fallback relevance heuristic (keyword density, coverage & position weighting)
         disc_kws = extract_discriminative_keywords(query)
+        query_entities = extract_query_named_entities(query)
         q_tokens = disc_kws if disc_kws else [_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', query.lower()) if w not in STOP_WORDS and len(w) > 2]
         if not q_tokens:
             q_tokens = [_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', query.lower()) if len(w) > 1]
 
         scored = []
         for chunk in chunks:
-            content = chunk.get("content", "").lower()
+            content = (chunk.get("content", "") + " " + chunk.get("title", "")).lower()
             c_tokens = [_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', content)]
             c_token_set = set(c_tokens)
             overlap_unique = set(q_tokens).intersection(c_token_set)
 
             if not overlap_unique and filter_irrelevant:
                 continue
+
+            if filter_irrelevant and query_entities:
+                if not any(ent in c_token_set for ent in query_entities):
+                    continue
 
             if filter_irrelevant and disc_kws:
                 matched_disc = [dk for dk in disc_kws if dk in c_token_set]

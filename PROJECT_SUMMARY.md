@@ -183,7 +183,7 @@ Below is the chronological record of critical flaws discovered, diagnosed, and r
 All numbers below were **directly measured** during automated testing and live instrumentation against the Dockerized services (`agentic_api`, `agentic_pgvector`, `agentic_redis`). No numbers are estimates, projections, or targets.
 
 ### A. Test Suite & Verification Accuracy
-- **Regression Suite Passing**: **25 / 25 tests** passing across four test modules (`test_hybrid_search.py`, `test_pipeline.py`, `test_regression_suite.py`).
+- **Regression Suite Passing**: **37 / 37 tests** passing across three test modules (`test_hybrid_search.py`, `test_pipeline.py`, `test_regression_suite.py`).
 - **Verifier Calibration Benchmark**: **8 / 8 adversarial benchmark cases** passing (100% calibration accuracy on dropped condition qualifiers, misattributed metrics, SLA limits, and subjective spin).
 
 ### B. Scale Testing (100-Document Corpus Expansion)
@@ -306,5 +306,5 @@ The following bullet points follow the **Action Verb + Tech + Quantifiable Impac
   > *Defense / Context*: Measured via `run_load_test.py` and `docker stats agentic_api`.
   > *Interviewer Caveat*: Cold queries experienced heavy tail latency (p50 of 6.7s, up to 27s p99) under 30 concurrent requests due to CPU contention and synchronous `.predict()` event-loop freezing. Be prepared to explain the exact diagnosis (`asyncio.to_thread`) and why this trade-off occurs.
 
-* **Implemented defensive API guardrails** in **FastAPI and Pydantic v2**, including a 50,000-character payload ceiling (HTTP 413) and input fuzzing hardening, with **25/25 automated regression tests** validating edge-case resilience and zero-leak memory stability (+1 MB per 100 docs).
+* **Implemented defensive API guardrails** in **FastAPI and Pydantic v2**, including a 50,000-character payload ceiling (HTTP 413) and input fuzzing hardening, with **37/37 automated regression tests** validating edge-case resilience and zero-leak memory stability (+1 MB per 100 docs).
   > *Defense / Context*: Measured via `test_regression_suite.py` and before/after container memory monitoring (`docker stats`).

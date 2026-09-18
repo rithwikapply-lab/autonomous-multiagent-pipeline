@@ -25,7 +25,10 @@ STOP_WORDS = {
     "you'd", "you'll", "you're", "you've", "your", "yours", "yourself", "yourselves"
 }
 
-from app.search.reranker import _stem, extract_discriminative_keywords, GENERIC_QUERY_WORDS, GENERIC_STEMS
+from app.search.reranker import (
+    _stem, extract_discriminative_keywords, extract_query_named_entities,
+    GENERIC_QUERY_WORDS, GENERIC_STEMS
+)
 import logging
 
 logger = logging.getLogger(__name__)
@@ -61,7 +64,7 @@ class VerifierAgent:
     against retrieved context to detect hallucinations and ensure faithfulness.
     """
 
-    def _is_topically_relevant(self, query: str, text: str, min_coverage: float = 0.50) -> bool:
+    def _is_topically_relevant(self, query: str, text: str, min_coverage: float = 0.50, require_entities: bool = True) -> bool:
         """
         Validates whether the answer or claim addresses the core subject matter of the query.
         Requires at least one discriminative keyword match and coverage exceeding min_coverage.
@@ -79,12 +82,19 @@ class VerifierAgent:
                 return True
             disc_q = substantive_q
 
+        disc_q = list(dict.fromkeys(disc_q))
+        query_entities = extract_query_named_entities(query)
         text_words = set([_stem(w) for w in re.findall(r'\b[a-zA-Z0-9_]+\b', text.lower())])
+
+        # If query specifies named entities, text must contain at least one of those entities when require_entities is True
+        if require_entities and query_entities and not any(ent in text_words for ent in query_entities):
+            return False
+
         matched = [dk for dk in disc_q if dk in text_words]
         if not matched:
             return False
         coverage = len(matched) / len(disc_q)
-        return coverage > min_coverage
+        return coverage > min_coverage if min_coverage > 0.0 else len(matched) > 0
 
     def _is_claim_supported(self, claim: str, context_text: str, chunks: List[Dict[str, Any]]) -> bool:
         """
@@ -284,11 +294,13 @@ class VerifierAgent:
         # 2. Verify discrete factual claims against context, topical relevance, and semantic entailment
         for claim in clean_claims:
             is_grounded = self._is_claim_supported(claim, context_text, chunks)
-            claim_is_topical = self._is_topically_relevant(query, claim, min_coverage=0.0)
+            claim_is_topical = self._is_topically_relevant(query, claim, min_coverage=0.0, require_entities=False)
 
             if not is_grounded:
                 unsupported_claims.append(claim)
-            elif not (claim_is_topical and is_context_topical):
+            elif not is_context_topical:
+                unsupported_claims.append(f"Claim is from an unrelated document for query '{query}': {claim}")
+            elif not claim_is_topical:
                 unsupported_claims.append(f"Claim is grounded in context but off-topic for query '{query}': {claim}")
             else:
                 # Tier 2: Semantic Entailment & Condition Guard (runs only on claims that pass Tier 1)

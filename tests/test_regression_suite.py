@@ -574,3 +574,195 @@ async def test_generalization_real_question_parental_leave_policy():
     report = state.final_output["verification_report"]
     assert report["is_faithful"] is True
     assert report["hallucination_score"] == 0.0
+
+
+# =====================================================================
+# 5. Real-World Document Regression Suite (Google Privacy Policy & Entity Protection)
+# =====================================================================
+
+DOC_GOOGLE_PRIVACY_0 = {
+    "chunk_id": "chunk_google_privacy_00",
+    "doc_id": "6bc24243-18f6-4205-9d68-81fe4a86638e",
+    "title": "Google Privacy Policy",
+    "content": "GOOGLE PRIVACY POLICY When you use our services, you're trusting us with your information. This Privacy Policy is meant to help you understand what information we collect, why we collect it, and how you can update, manage, export, and delete your information. Effective May 26, 2026. We build a range of services that help millions of people daily to explore and interact with the world in new ways."
+}
+
+DOC_GOOGLE_PRIVACY_2 = {
+    "chunk_id": "chunk_google_privacy_02",
+    "doc_id": "6bc24243-18f6-4205-9d68-81fe4a86638e",
+    "title": "Google Privacy Policy",
+    "content": "YOUR PRIVACY CONTROLS Personalization and Activity Controls: Across many of our services, you can adjust history and personalization controls to make choices about whether we save some types of data in your Google Account and how we use it to personalize your experience. EXPORTING, REMOVING & DELETING YOUR INFORMATION You can export a copy of content in your Google Account if you want to back it up or use it with a service outside of Google. To delete your information, you can delete your content from specific Google services, search for and delete specific items using My Activity, delete specific Google products, or delete your entire Google Account."
+}
+
+DOC_GOOGLE_PRIVACY_3 = {
+    "chunk_id": "chunk_google_privacy_03",
+    "doc_id": "6bc24243-18f6-4205-9d68-81fe4a86638e",
+    "title": "Google Privacy Policy",
+    "content": "With domain administrators: If you're a student or work for an organization that uses Google services, your domain administrator and resellers who manage your account will have access to your Google Account. They may be able to access and retain information stored in your account like your email, view statistics regarding your account, change your account password, suspend or terminate your account access, receive your account information to satisfy legal requests, and restrict your ability to delete or edit your information or privacy settings."
+}
+
+DOC_GOOGLE_PRIVACY_4 = {
+    "chunk_id": "chunk_google_privacy_04",
+    "doc_id": "6bc24243-18f6-4205-9d68-81fe4a86638e",
+    "title": "Google Privacy Policy",
+    "content": "Activity on Google Services: When you search for something using a general area, your search will use an area of at least 3 square kilometers, or expand until the area represents the locations of at least 1,000 people. This helps protect your privacy. Partner with Google: There are over 2 million non-Google websites and apps that partner with Google to show ads."
+}
+
+
+@pytest.mark.asyncio
+async def test_regression_privacy_policy_effective_date():
+    """
+    Issue 1: Short factual query failure on 'When did this privacy policy take effect?'
+    Document opens with 'Effective May 26, 2026.'
+    Ensures derivational suffix normalization ('effective' -> 'effect') matches query 'effect',
+    extracts the effective date, and passes verification.
+    """
+    query = "When did this privacy policy take effect?"
+    state = AgentState(query=query)
+    state.retrieved_chunks = [DOC_GOOGLE_PRIVACY_0]
+    state = await research_agent.analyze(state)
+
+    summary = state.draft_summary["executive_summary"]
+    assert "I don't have information about this in the provided documents." not in summary
+    assert "May 26, 2026" in summary
+    assert state.draft_summary["confidence_score"] >= 0.80
+
+    state = verifier_agent.verify(state)
+    report = state.final_output["verification_report"]
+    assert report["is_faithful"] is True
+    assert report["hallucination_score"] == 0.0
+    assert len(report["unsupported_claims"]) == 0
+
+
+@pytest.mark.asyncio
+async def test_regression_download_google_data_export_paraphrase():
+    """
+    Issue 2: Paraphrase failure on 'Can I download my Google data to use somewhere else?'
+    Retrieves chunk containing both Personalization and Export sections.
+    Ensures synonym normalization ('download' -> 'export') selects the Export section
+    ('export a copy of content... to use it with a service outside of Google') rather than
+    the Personalization section, and passes verification.
+    """
+    query = "Can I download my Google data to use somewhere else?"
+    state = AgentState(query=query)
+    state.retrieved_chunks = [DOC_GOOGLE_PRIVACY_2]
+    state = await research_agent.analyze(state)
+
+    summary = state.draft_summary["executive_summary"]
+    assert "I don't have information about this in the provided documents." not in summary
+    assert "export a copy of content in your Google Account" in summary or "use it with a service outside of Google" in summary
+    assert state.draft_summary["confidence_score"] >= 0.80
+
+    state = verifier_agent.verify(state)
+    report = state.final_output["verification_report"]
+    assert report["is_faithful"] is True
+    assert report["hallucination_score"] == 0.0
+    assert len(report["unsupported_claims"]) == 0
+
+
+@pytest.mark.asyncio
+async def test_regression_student_school_managed_account():
+    """
+    Issue 3: Verifier over-correction regression on:
+    'If I'm a student and my school uses Google, can the school see my account?'
+    Candidate chunk explains domain administrator access.
+    Ensures keyword deduplication ('school' count 1 instead of 2) and perception verb handling ('see')
+    prevent topical false rejection, and claim relevance primacy verifies grounded claims faithfully.
+    """
+    query = "If I'm a student and my school uses Google, can the school see my account?"
+    state = AgentState(query=query)
+    state.retrieved_chunks = [DOC_GOOGLE_PRIVACY_3]
+    state = await research_agent.analyze(state)
+
+    summary = state.draft_summary["executive_summary"]
+    assert "I don't have information about this in the provided documents." not in summary
+    assert "domain administrator" in summary or "administrator" in summary
+
+    state = verifier_agent.verify(state)
+    report = state.final_output["verification_report"]
+    assert report["is_faithful"] is True
+    assert report["hallucination_score"] == 0.0
+    assert len(report["unsupported_claims"]) == 0
+
+
+@pytest.mark.asyncio
+async def test_regression_ads_partner_metrics_sentence_scoping():
+    """
+    Issue 4: Metric cross-contamination in:
+    'How many websites and apps partner with Google to show ads?'
+    Chunk contains '3 square kilometers', '1,000 people' in sentence 1, and '2 million' in sentence 2.
+    Ensures metric extraction is scoped to topical sentences, extracting '2 million' while strictly
+    excluding unrelated metrics ('3', '1,000') from distant sentences.
+    """
+    query = "How many websites and apps partner with Google to show ads?"
+    state = AgentState(query=query)
+    state.retrieved_chunks = [DOC_GOOGLE_PRIVACY_4]
+    state = await research_agent.analyze(state)
+
+    summary = state.draft_summary["executive_summary"]
+    assert "I don't have information about this in the provided documents." not in summary
+
+    metric_values = [str(m["value"]) for m in state.draft_summary["key_metrics"]]
+    assert "2 million" in metric_values
+    assert "3" not in metric_values
+    assert "1,000" not in metric_values
+
+    state = verifier_agent.verify(state)
+    report = state.final_output["verification_report"]
+    assert report["is_faithful"] is True
+    assert report["hallucination_score"] == 0.0
+    assert len(report["unsupported_claims"]) == 0
+
+
+@pytest.mark.asyncio
+async def test_regression_entity_conflation_google_vacation_rejection():
+    """
+    Issue 5 & Proper Noun Capitalization Guard:
+    1. Entity Conflation: 'How many vacation days do Google employees get?' against
+       synthetic Vacation Policy which never mentions Google.
+       Must reject with graceful no-information response.
+    2. Capitalization Guard: Sentence-initial common words (e.g. 'The Company provides...')
+       must NOT be misdetected as named entities and must NOT cause false rejections.
+    """
+    from app.search.reranker import extract_query_named_entities
+
+    # Sub-check A: Sentence-initial capitalization does not extract common words as named entities
+    assert extract_query_named_entities("The Company provides 15 vacation days per year.") == []
+    assert extract_query_named_entities("Policy allows remote work on Fridays?") == []
+    assert extract_query_named_entities("What happens if an employee loses their laptop?") == []
+    assert extract_query_named_entities("Does Google have a vacation policy?") == ["googl"]
+    assert extract_query_named_entities("AWS provides cloud hosting") == ["aws"]
+
+    # Sub-check B: Non-entity query 'The Company provides how many vacation days?' answers faithfully
+    valid_query = "The Company provides how many vacation days?"
+    valid_state = AgentState(query=valid_query)
+    valid_state.retrieved_chunks = [DOC_VACATION]
+    valid_state = await research_agent.analyze(valid_state)
+    assert valid_state.draft_summary["confidence_score"] >= 0.80
+    valid_metrics = [str(m["value"]) for m in valid_state.draft_summary["key_metrics"]]
+    assert "15" in valid_metrics
+
+    # Sub-check C: Entity conflation rejection: query names 'Google', but Vacation Policy has no Google mention
+    query = "How many vacation days do Google employees get?"
+
+    # 1. Reranker relevance gate: rejects chunk due to missing named entity
+    reranked = cross_encoder_reranker.rerank(query, CORPUS_REAL_DOCS, filter_irrelevant=True)
+    assert reranked == [], f"Expected reranker to reject chunks lacking named entity 'Google', got: {reranked}"
+
+    # 2. ResearchAgent topical relevance gate: fails topical match
+    state = AgentState(query=query)
+    state.retrieved_chunks = CORPUS_REAL_DOCS
+    state = await research_agent.analyze(state)
+
+    summary = state.draft_summary["executive_summary"]
+    assert "I don't have information about this in the provided documents." in summary
+    assert state.draft_summary["confidence_score"] == 0.0
+    assert state.draft_summary["key_metrics"] == []
+    assert state.draft_summary["verifiable_claims"] == []
+
+    # 3. VerifierAgent confirms faithful lack-of-knowledge admission
+    state = verifier_agent.verify(state)
+    report = state.final_output["verification_report"]
+    assert report["is_faithful"] is True
+    assert report["hallucination_score"] == 0.0
+    assert len(report["unsupported_claims"]) == 0
